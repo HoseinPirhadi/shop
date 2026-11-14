@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
-import گذرواژهInput from '@/components/گذرواژهInput.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -63,7 +63,7 @@ defineOptions({
 
             <div class="grid gap-2">
                 <Label for="password">گذرواژه</Label>
-                <گذرواژهInput
+                <PasswordInput
                     id="password"
                     required
                     :tabindex="3"
@@ -77,7 +77,7 @@ defineOptions({
 
             <div class="grid gap-2">
                 <Label for="password_confirmation">تکرار گذرواژه</Label>
-                <گذرواژهInput
+                <PasswordInput
                     id="password_confirmation"
                     required
                     :tabindex="4"
