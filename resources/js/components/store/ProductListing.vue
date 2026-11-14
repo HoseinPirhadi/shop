@@ -80,7 +80,10 @@ async function loadProducts() {
         products.value = payload.data;
         pagination.value = payload.meta;
     } catch (error) {
-        if (error instanceof DOMException && error.name === 'AbortError') return;
+        if (error instanceof DOMException && error.name === 'AbortError') {
+            return;
+        }
+        if (activeRequest !== controller) return;
         products.value = [];
         pagination.value = null;
         errorMessage.value = 'در حال حاضر دریافت محصولات ممکن نیست.';
@@ -134,17 +137,31 @@ onBeforeUnmount(() => {
 
 <template>
     <section>
-        <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div
+            class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+        >
             <div>
                 <h2 class="text-xl font-semibold">{{ heading }}</h2>
-                <p v-if="pagination" class="mt-1 text-sm text-muted-foreground">
+                <p
+                    v-if="pagination"
+                    class="mt-1 text-sm text-muted-foreground"
+                >
                     {{ pagination.total.toLocaleString('fa-IR') }} محصول
                 </p>
             </div>
 
             <div class="flex flex-col gap-2 sm:flex-row">
-                <form class="flex gap-2" role="search" @submit.prevent="submitSearch">
-                    <label class="sr-only" for="store-product-search">جستجوی محصولات</label>
+                <form
+                    class="flex gap-2"
+                    role="search"
+                    @submit.prevent="submitSearch"
+                >
+                    <label
+                        class="sr-only"
+                        for="store-product-search"
+                    >
+                        جستجوی محصولات
+                    </label>
                     <input
                         id="store-product-search"
                         v-model="searchInput"
@@ -161,7 +178,12 @@ onBeforeUnmount(() => {
                     </button>
                 </form>
 
-                <label class="sr-only" for="store-product-sort">مرتب‌سازی محصولات</label>
+                <label
+                    class="sr-only"
+                    for="store-product-sort"
+                >
+                    مرتب‌سازی محصولات
+                </label>
                 <select
                     id="store-product-sort"
                     :value="sort"
@@ -184,14 +206,21 @@ onBeforeUnmount(() => {
             {{ errorMessage }}
         </div>
 
-        <p v-if="loading" class="rounded-lg border p-6 text-sm text-muted-foreground">
+        <p
+            v-if="loading"
+            class="rounded-lg border p-6 text-sm text-muted-foreground"
+        >
             در حال دریافت محصولات...
         </p>
         <p
             v-else-if="!hasProducts"
             class="rounded-lg border p-6 text-sm text-muted-foreground"
         >
-            {{ search ? 'محصولی با این عبارت پیدا نشد.' : 'هنوز محصول فعالی برای نمایش وجود ندارد.' }}
+            {{
+                search
+                    ? 'محصولی با این عبارت پیدا نشد.'
+                    : 'هنوز محصول فعالی برای نمایش وجود ندارد.'
+            }}
         </p>
 
         <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -201,10 +230,18 @@ onBeforeUnmount(() => {
                 class="flex flex-col rounded-xl border p-5 transition hover:border-primary/50"
             >
                 <h3 class="font-semibold">{{ product.name }}</h3>
-                <p class="mt-2 line-clamp-3 flex-1 text-sm leading-6 text-muted-foreground">
-                    {{ product.description || 'توضیحاتی برای این محصول ثبت نشده است.' }}
+                <p
+                    class="mt-2 line-clamp-3 flex-1 text-sm leading-6 text-muted-foreground"
+                >
+                    {{
+                        product.description ||
+                        'توضیحاتی برای این محصول ثبت نشده است.'
+                    }}
                 </p>
-                <div v-if="product.categories.length" class="mt-4 flex flex-wrap gap-2">
+                <div
+                    v-if="product.categories.length"
+                    class="mt-4 flex flex-wrap gap-2"
+                >
                     <Link
                         v-for="category in product.categories"
                         :key="category.id"
