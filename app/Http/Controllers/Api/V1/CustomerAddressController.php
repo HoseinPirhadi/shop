@@ -64,10 +64,10 @@ class CustomerAddressController extends Controller
 
             if (array_key_exists('is_default', $data)) {
                 if ($data['is_default']) {
-                    $lockedUser->addresses()->whereKeyNot($lockedAddress->id)->update(['is_default' => false]);
+                    $lockedUser->addresses()->where('id', '<>', $lockedAddress->id)->update(['is_default' => false]);
                 } elseif ($lockedAddress->is_default) {
                     $replacement = $lockedUser->addresses()
-                        ->whereKeyNot($lockedAddress->id)
+                        ->where('id', '<>', $lockedAddress->id)
                         ->orderBy('id')
                         ->first();
 
