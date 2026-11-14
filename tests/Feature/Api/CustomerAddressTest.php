@@ -59,6 +59,27 @@ test('customers can update an address and change the default address', function 
     ]);
 });
 
+test('address listing only returns the authenticated users addresses', function () {
+    $owner = User::factory()->create();
+    $otherUser = User::factory()->create();
+
+    $this->actingAs($owner)
+        ->postJson('/api/v1/me/addresses', addressPayload())
+        ->assertCreated();
+
+    $this->actingAs($otherUser)
+        ->postJson('/api/v1/me/addresses', addressPayload([
+            'label' => 'نشانی دیگر',
+        ]))
+        ->assertCreated();
+
+    $this->actingAs($owner)
+        ->getJson('/api/v1/me/addresses')
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.label', 'خانه');
+});
+
 test('customers cannot read or modify another users addresses', function () {
     $owner = User::factory()->create();
     $otherUser = User::factory()->create();
