@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductVariantRequest;
 use App\Http\Requests\UpdateProductVariantRequest;
+use App\Http\Resources\AdminProductVariantResource;
 use App\Http\Resources\ProductVariantMovementResource;
 use App\Http\Resources\ProductVariantResource;
 use App\Models\InventoryMovement;
@@ -19,7 +20,7 @@ class ProductVariantController extends Controller
 {
     public function index(Product $product): AnonymousResourceCollection
     {
-        return ProductVariantResource::collection(
+        return AdminProductVariantResource::collection(
             $product->variants()->orderByDesc('is_default')->orderBy('id')->get()
         );
     }
@@ -37,7 +38,7 @@ class ProductVariantController extends Controller
             return $lockedProduct->variants()->create($data);
         });
 
-        return (new ProductVariantResource($variant))
+        return (new AdminProductVariantResource($variant))
             ->response()
             ->setStatusCode(201);
     }
