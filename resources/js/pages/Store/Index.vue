@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ProductListing from '@/components/store/ProductListing.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
 type Category = {
@@ -75,7 +75,7 @@ onMounted(async () => {
             هنوز دسته‌بندی فعالی ثبت نشده است.
         </p>
         <div v-else class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <a
+            <Link
                 v-for="category in categories"
                 :key="category.id"
                 :href="'/categories/' + category.slug"
@@ -85,7 +85,7 @@ onMounted(async () => {
                 <span class="mt-2 block text-sm text-muted-foreground">
                     مشاهده محصولات
                 </span>
-            </a>
+            </Link>
         </div>
     </section>
 
