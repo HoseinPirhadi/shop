@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, جستجو } from '@lucide/vue';
+import { BookOpen, Folder, LayoutGrid, Menu, Search } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
@@ -91,7 +91,7 @@ const rightNavItems: NavItem[] = [
                                 <Menu class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" class="w-[300px] p-6">
+                        <SheetContent side="right" class="w-[300px] p-6">
                             <SheetTitle class="sr-only"
                                 >فهرست ناوبری</SheetTitle
                             >
@@ -193,9 +193,10 @@ const rightNavItems: NavItem[] = [
                         <Button
                             variant="ghost"
                             size="icon"
+                            aria-label="جستجو"
                             class="group h-9 w-9 cursor-pointer"
                         >
-                            <جستجو
+                            <Search
                                 class="size-5 opacity-80 group-hover:opacity-100"
                             />
                         </Button>
