@@ -4,7 +4,7 @@ import { useTemplateRef } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
-import PasswordInput from '@/components/PasswordInput.vue';
+import گذرواژهInput from '@/components/گذرواژهInput.vue';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -25,22 +25,22 @@ const passwordInput = useTemplateRef('passwordInput');
     <div class="space-y-6">
         <Heading
             variant="small"
-            title="Delete account"
-            description="Delete your account and all of its resources"
+            title="حذف حساب کاربری"
+            description="حذف حساب کاربری و تمام اطلاعات مرتبط"
         />
         <div
             class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10"
         >
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
-                <p class="font-medium">Warning</p>
+                <p class="font-medium">هشدار</p>
                 <p class="text-sm">
-                    Please proceed with caution, this cannot be undone.
+                    با احتیاط ادامه دهید؛ این عملیات قابل بازگشت نیست.
                 </p>
             </div>
             <Dialog>
                 <DialogTrigger as-child>
                     <Button variant="destructive" data-test="delete-user-button"
-                        >Delete account</Button
+                        >حذف حساب کاربری</Button
                     >
                 </DialogTrigger>
                 <DialogContent>
@@ -70,13 +70,13 @@ const passwordInput = useTemplateRef('passwordInput');
 
                         <div class="grid gap-2">
                             <Label for="password" class="sr-only"
-                                >Password</Label
+                                >گذرواژه</Label
                             >
-                            <PasswordInput
+                            <گذرواژهInput
                                 id="password"
                                 name="password"
                                 ref="passwordInput"
-                                placeholder="Password"
+                                placeholder="گذرواژه"
                             />
                             <InputError :message="errors.password" />
                         </div>
@@ -92,7 +92,7 @@ const passwordInput = useTemplateRef('passwordInput');
                                         }
                                     "
                                 >
-                                    Cancel
+                                    انصراف
                                 </Button>
                             </DialogClose>
 
@@ -102,7 +102,7 @@ const passwordInput = useTemplateRef('passwordInput');
                                 :disabled="processing"
                                 data-test="confirm-delete-user-button"
                             >
-                                Delete account
+                                حذف حساب کاربری
                             </Button>
                         </DialogFooter>
                     </Form>
