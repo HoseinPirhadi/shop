@@ -1,10 +1,10 @@
 <?php
 
-namespace App\\Http\\Requests;
+namespace App\Http\Requests;
 
-use App\\Models\\ProductVariant;
-use Illuminate\\Foundation\\Http\\FormRequest;
-use Illuminate\\Validation\\Rule;
+use App\Models\ProductVariant;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProductVariantRequest extends FormRequest
 {
