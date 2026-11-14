@@ -185,7 +185,8 @@ async function saveVariant() {
         );
 
         await loadVariants();
-        selectVariant(variants.value.find((item) => item.id === result.data.id) ?? variants.value[0]);
+        const savedVariant = variants.value.find((item) => item.id === result.data.id);
+        if (savedVariant) selectVariant(savedVariant);
     } catch (error) {
         const apiError = error as ApiError;
         fieldErrors.value = apiError.errors ?? {};
