@@ -47,7 +47,10 @@ const form = ref({
     is_default: false,
 });
 const selectedVariant = computed(
-    () => variants.value.find((variant) => variant.id === selectedId.value) ?? null,
+    () =>
+        variants.value.find(
+            (variant) => variant.id === selectedId.value,
+        ) ?? null,
 );
 
 function csrfToken(): string {
@@ -58,7 +61,10 @@ function csrfToken(): string {
     return cookie ? decodeURIComponent(cookie.slice('XSRF-TOKEN='.length)) : '';
 }
 
-async function apiRequest<T>(url: string, options: RequestInit = {}): Promise<T> {
+async function apiRequest<T>(
+    url: string,
+    options: RequestInit = {},
+): Promise<T> {
     const response = await fetch(url, {
         credentials: 'same-origin',
         ...options,
@@ -85,7 +91,11 @@ function toOptions(): Record<string, string> | null {
         .filter(Boolean)
         .map((line) => {
             const separator = line.indexOf('=');
-            if (separator < 1) throw new Error('هر ویژگی را در یک خط با قالب «نام=مقدار» وارد کنید.');
+            if (separator < 1) {
+                throw new Error(
+                    'هر ویژگی را در یک خط با قالب «نام=مقدار» وارد کنید.',
+                );
+            }
             return [line.slice(0, separator).trim(), line.slice(separator + 1).trim()];
         });
 
@@ -125,7 +135,11 @@ async function loadMovements() {
     }
 
     const result = await apiRequest<{ data: Movement[] }>(
-        '/api/v1/admin/products/' + props.productId + '/variants/' + selectedId.value + '/inventory-movements',
+        '/api/v1/admin/products/' +
+            props.productId +
+            '/variants/' +
+            selectedId.value +
+            '/inventory-movements',
     );
     movements.value = result.data;
 }
@@ -143,7 +157,9 @@ async function loadVariants() {
         loadIntoForm(selectedVariant.value);
         await loadMovements();
     } catch (error) {
-        errorMessage.value = (error as ApiError).message ?? 'دریافت گونه‌های محصول انجام نشد.';
+        errorMessage.value =
+            (error as ApiError).message ??
+            'دریافت گونه‌های محصول انجام نشد.';
     } finally {
         loading.value = false;
     }
@@ -185,12 +201,16 @@ async function saveVariant() {
         );
 
         await loadVariants();
-        const savedVariant = variants.value.find((item) => item.id === result.data.id);
+        const savedVariant = variants.value.find(
+            (item) => item.id === result.data.id,
+        );
         if (savedVariant) selectVariant(savedVariant);
     } catch (error) {
         const apiError = error as ApiError;
         fieldErrors.value = apiError.errors ?? {};
-        errorMessage.value = apiError.errors ? '' : (apiError.message ?? 'ذخیره گونه انجام نشد.');
+        errorMessage.value = apiError.errors
+            ? ''
+            : (apiError.message ?? 'ذخیره گونه انجام نشد.');
     } finally {
         saving.value = false;
     }
@@ -204,7 +224,11 @@ async function adjustInventory() {
 
     try {
         await apiRequest(
-            '/api/v1/admin/products/' + props.productId + '/variants/' + selectedId.value + '/inventory-adjustments',
+            '/api/v1/admin/products/' +
+                props.productId +
+                '/variants/' +
+                selectedId.value +
+                '/inventory-adjustments',
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -224,7 +248,9 @@ async function adjustInventory() {
         }
         await loadMovements();
     } catch (error) {
-        errorMessage.value = (error as ApiError).message ?? 'ثبت تغییر موجودی انجام نشد.';
+        errorMessage.value =
+            (error as ApiError).message ??
+            'ثبت تغییر موجودی انجام نشد.';
     } finally {
         adjusting.value = false;
     }
@@ -235,12 +261,16 @@ async function deleteVariant(variant: Variant) {
 
     try {
         await apiRequest(
-            '/api/v1/admin/products/' + props.productId + '/variants/' + variant.id,
+            '/api/v1/admin/products/' +
+                props.productId +
+                '/variants/' +
+                variant.id,
             { method: 'DELETE' },
         );
         await loadVariants();
     } catch (error) {
-        errorMessage.value = (error as ApiError).message ?? 'حذف گونه انجام نشد.';
+        errorMessage.value =
+            (error as ApiError).message ?? 'حذف گونه انجام نشد.';
     }
 }
 
@@ -256,7 +286,11 @@ onMounted(loadVariants);
             </p>
         </div>
 
-        <div v-if="errorMessage" role="alert" class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+        <div
+            v-if="errorMessage"
+            role="alert"
+            class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+        >
             {{ errorMessage }}
         </div>
 
@@ -274,7 +308,11 @@ onMounted(loadVariants);
                     {{ variant.name }}
                     <span v-if="variant.is_default" class="text-xs text-primary"> (پیش‌فرض)</span>
                 </button>
-                <button type="button" class="rounded-md border border-dashed px-3 py-2 text-sm" @click="newVariant">
+                <button
+                    type="button"
+                    class="rounded-md border border-dashed px-3 py-2 text-sm"
+                    @click="newVariant"
+                >
                     افزودن گونه
                 </button>
             </div>
@@ -282,17 +320,42 @@ onMounted(loadVariants);
             <form class="grid gap-3 md:grid-cols-2" @submit.prevent="saveVariant">
                 <label class="grid gap-1 text-sm">
                     نام گونه
-                    <input v-model="form.name" required maxlength="160" class="h-10 rounded-md border bg-background px-3" />
-                    <span v-if="fieldErrors.name" class="text-xs text-destructive">{{ fieldErrors.name[0] }}</span>
+                    <input
+                        v-model="form.name"
+                        required
+                        maxlength="160"
+                        class="h-10 rounded-md border bg-background px-3"
+                    />
+                    <span
+                        v-if="fieldErrors.name"
+                        class="text-xs text-destructive"
+                    >
+                        {{ fieldErrors.name[0] }}
+                    </span>
                 </label>
                 <label class="grid gap-1 text-sm">
                     SKU
-                    <input v-model="form.sku" maxlength="100" dir="ltr" class="h-10 rounded-md border bg-background px-3" />
-                    <span v-if="fieldErrors.sku" class="text-xs text-destructive">{{ fieldErrors.sku[0] }}</span>
+                    <input
+                        v-model="form.sku"
+                        maxlength="100"
+                        dir="ltr"
+                        class="h-10 rounded-md border bg-background px-3"
+                    />
+                    <span
+                        v-if="fieldErrors.sku"
+                        class="text-xs text-destructive"
+                    >
+                        {{ fieldErrors.sku[0] }}
+                    </span>
                 </label>
                 <label class="grid gap-1 text-sm md:col-span-2">
                     ویژگی‌ها (هر خط: نام=مقدار)
-                    <textarea v-model="form.optionsText" rows="3" class="rounded-md border bg-background px-3 py-2" placeholder="رنگ=مشکی&#10;سایز=بزرگ" />
+                    <textarea
+                        v-model="form.optionsText"
+                        rows="3"
+                        class="rounded-md border bg-background px-3 py-2"
+                        placeholder="رنگ=مشکی&#10;سایز=بزرگ"
+                    />
                 </label>
                 <label class="flex items-center gap-2 text-sm">
                     <input v-model="form.track_inventory" type="checkbox" class="size-4" />
@@ -313,21 +376,43 @@ onMounted(loadVariants);
                 </div>
             </form>
 
-            <div v-if="selectedVariant && selectedVariant.track_inventory" class="rounded-md bg-muted/40 p-3">
+            <div
+                v-if="selectedVariant && selectedVariant.track_inventory"
+                class="rounded-md bg-muted/40 p-3"
+            >
                 <p class="text-sm">
                     موجودی فعلی:
                     <strong>{{ selectedVariant.stock_quantity }}</strong>
                 </p>
-                <form class="mt-3 grid gap-2 md:grid-cols-[1fr_2fr_auto]" @submit.prevent="adjustInventory">
+                <form
+                    class="mt-3 grid gap-2 md:grid-cols-[1fr_2fr_auto]"
+                    @submit.prevent="adjustInventory"
+                >
                     <label class="grid gap-1 text-sm">
                         تغییر تعداد (+ یا -)
-                        <input v-model.number="quantityDelta" type="number" step="1" required class="h-10 rounded-md border bg-background px-3" />
+                        <input
+                            v-model.number="quantityDelta"
+                            type="number"
+                            step="1"
+                            required
+                            class="h-10 rounded-md border bg-background px-3"
+                        />
                     </label>
                     <label class="grid gap-1 text-sm">
                         دلیل تغییر
-                        <input v-model="reason" required maxlength="500" class="h-10 rounded-md border bg-background px-3" placeholder="مثلاً خرید جدید یا اصلاح شمارش" />
+                        <input
+                            v-model="reason"
+                            required
+                            maxlength="500"
+                            class="h-10 rounded-md border bg-background px-3"
+                            placeholder="مثلاً خرید جدید یا اصلاح شمارش"
+                        />
                     </label>
-                    <button type="submit" :disabled="adjusting || quantityDelta === 0 || !reason.trim()" class="self-end rounded-md border px-4 py-2 text-sm disabled:opacity-50">
+                    <button
+                        type="submit"
+                        :disabled="adjusting || quantityDelta === 0 || !reason.trim()"
+                        class="self-end rounded-md border px-4 py-2 text-sm disabled:opacity-50"
+                    >
                         {{ adjusting ? '...' : 'ثبت موجودی' }}
                     </button>
                 </form>
@@ -336,7 +421,12 @@ onMounted(loadVariants);
             <div v-if="selectedVariant" class="space-y-2">
                 <div class="flex items-center justify-between">
                     <h4 class="text-sm font-medium">سوابق تغییر موجودی</h4>
-                    <button v-if="variants.length > 1" type="button" class="text-xs text-destructive hover:underline" @click="deleteVariant(selectedVariant)">
+                    <button
+                        v-if="variants.length > 1"
+                        type="button"
+                        class="text-xs text-destructive hover:underline"
+                        @click="deleteVariant(selectedVariant)"
+                    >
                         حذف این گونه
                     </button>
                 </div>
@@ -352,7 +442,14 @@ onMounted(loadVariants);
                         </thead>
                         <tbody class="divide-y">
                             <tr v-for="movement in movements" :key="movement.id">
-                                <td class="py-2" :class="movement.quantity_delta > 0 ? 'text-green-600' : 'text-destructive'">
+                                <td
+                                    class="py-2"
+                                    :class="
+                                        movement.quantity_delta > 0
+                                            ? 'text-green-600'
+                                            : 'text-destructive'
+                                    "
+                                >
                                     {{ movement.quantity_delta > 0 ? '+' : '' }}{{ movement.quantity_delta }}
                                 </td>
                                 <td class="py-2">{{ movement.quantity_before }}</td>
