@@ -78,11 +78,11 @@
 
 تمام مسیرهای زیر به نشست Sanctum و مجوز access-admin نیاز دارند:
 
-| متد   | مسیر                                      | توضیح |
-| ----- | ----------------------------------------- | ----- |
-| POST  | /api/v1/admin/products/{product}/images   | بارگذاری تصویر |
-| PATCH | /api/v1/admin/products/{product}/images/{image} | ویرایش متن جایگزین، ترتیب یا تصویر اصلی |
-| DELETE | /api/v1/admin/products/{product}/images/{image} | حذف تصویر و فایل ذخیره‌شده |
+| متد    | مسیر                                            | توضیح                                   |
+| ------ | ----------------------------------------------- | --------------------------------------- |
+| POST   | /api/v1/admin/products/{product}/images         | بارگذاری تصویر                          |
+| PATCH  | /api/v1/admin/products/{product}/images/{image} | ویرایش متن جایگزین، ترتیب یا تصویر اصلی |
+| DELETE | /api/v1/admin/products/{product}/images/{image} | حذف تصویر و فایل ذخیره‌شده               |
 
 ورودی بارگذاری شامل image (الزامی، JPG/JPEG/PNG/WebP، حداکثر ۵ مگابایت)، alt (اختیاری، حداکثر ۱۶۰ کاراکتر) و sort_order (اختیاری، عدد صحیح نامنفی) است. در ویرایش، فیلدهای alt، sort_order و is_primary قابل تغییر هستند. تصویر متعلق به محصول دیگر از طریق مسیر تو‌در‌تو قابل مدیریت نیست. حذف محصول نیز فایل‌های تصاویر آن را از disk عمومی پاک می‌کند.
 
