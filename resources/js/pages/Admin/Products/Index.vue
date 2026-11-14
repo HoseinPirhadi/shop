@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
+import ProductImageManager from '@/components/admin/ProductImageManager.vue';
 import { onMounted, ref } from 'vue';
 
 type Category = {
     id: number;
     name: string;
+};
+
+type ProductImage = {
+    id: number;
+    url: string;
+    alt: string | null;
+    sort_order: number;
+    is_primary: boolean;
 };
 
 type Product = {
@@ -15,6 +24,7 @@ type Product = {
     sort_order: number;
     is_active: boolean;
     categories: Category[];
+    images: ProductImage[];
 };
 
 type ProductPage = {
@@ -51,6 +61,7 @@ const errorMessage = ref('');
 const formVisible = ref(false);
 const editingId = ref<number | null>(null);
 const fieldErrors = ref<Record<string, string[]>>({});
+const formImages = ref<ProductImage[]>([]);
 
 const emptyForm = (): ProductForm => ({
     name: '',
@@ -140,11 +151,13 @@ function openCreateForm() {
     editingId.value = null;
     form.value = emptyForm();
     fieldErrors.value = {};
+    formImages.value = [];
     formVisible.value = true;
 }
 
 function openEditForm(product: Product) {
     editingId.value = product.id;
+    formImages.value = [...product.images];
     form.value = {
         name: product.name,
         slug: product.slug,
@@ -160,6 +173,16 @@ function openEditForm(product: Product) {
 function closeForm() {
     formVisible.value = false;
     fieldErrors.value = {};
+    formImages.value = [];
+}
+
+function handleImagesUpdated(images: ProductImage[]) {
+    formImages.value = images;
+    if (editingId.value !== null) {
+        products.value = products.value.map((product) =>
+            product.id === editingId.value ? { ...product, images } : product,
+        );
+    }
 }
 
 async function saveProduct() {
@@ -372,6 +395,20 @@ onMounted(async () => {
                     فعال و قابل نمایش در فروشگاه
                 </label>
 
+                <div v-if="editingId" class="md:col-span-2">
+                    <ProductImageManager
+                        :product-id="editingId"
+                        :images="formImages"
+                        @update:images="handleImagesUpdated"
+                    />
+                </div>
+                <p
+                    v-else
+                    class="rounded-md bg-muted/50 p-3 text-sm text-muted-foreground md:col-span-2"
+                >
+                    برای افزودن تصاویر، ابتدا محصول را ذخیره کنید و سپس آن را ویرایش کنید.
+                </p>
+
                 <div class="flex justify-end gap-2 md:col-span-2">
                     <button
                         type="button"
@@ -407,9 +444,10 @@ onMounted(async () => {
             </div>
 
             <div v-else class="overflow-x-auto">
-                <table class="w-full min-w-[760px] text-sm">
+                <table class="w-full min-w-[820px] text-sm">
                     <thead class="bg-muted/50 text-right text-muted-foreground">
                         <tr>
+                            <th class="px-4 py-3 font-medium">تصویر</th>
                             <th class="px-4 py-3 font-medium">نام</th>
                             <th class="px-4 py-3 font-medium">Slug</th>
                             <th class="px-4 py-3 font-medium">دسته‌بندی‌ها</th>
@@ -420,6 +458,20 @@ onMounted(async () => {
                     </thead>
                     <tbody class="divide-y">
                         <tr v-for="product in products" :key="product.id">
+                            <td class="px-4 py-3">
+                                <img
+                                    v-if="product.images.length"
+                                    :src="product.images[0].url"
+                                    :alt="product.images[0].alt ?? product.name"
+                                    class="size-12 rounded-md object-cover"
+                                />
+                                <div
+                                    v-else
+                                    class="flex size-12 items-center justify-center rounded-md bg-muted text-xs text-muted-foreground"
+                                >
+                                    —
+                                </div>
+                            </td>
                             <td class="px-4 py-3 font-medium">
                                 {{ product.name }}
                             </td>
