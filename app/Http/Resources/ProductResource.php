@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\\Http\\Resources;
 
-use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\\Models\\Product;
+use Illuminate\\Http\\Request;
+use Illuminate\\Http\\Resources\\Json\\JsonResource;
 
 /**
  * @mixin Product
@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'is_active' => $this->is_active,
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
+            'variants' => ProductVariantResource::collection($this->whenLoaded('variants')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
