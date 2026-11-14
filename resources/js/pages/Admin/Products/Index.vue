@@ -305,7 +305,7 @@ onMounted(async () => {
                 </label>
 
                 <label class="grid gap-1.5 text-sm">
-                    شناسه URL (Slug)
+                    شناسه نشانی محصول
                     <input
                         v-model="form.slug"
                         required
@@ -339,7 +339,7 @@ onMounted(async () => {
                         </option>
                     </select>
                     <span class="text-xs text-muted-foreground">
-                        برای انتخاب چند دسته، کلید Ctrl را نگه دارید.
+                        برای انتخاب چند دسته، کلید کنترل را نگه دارید.
                     </span>
                     <span
                         v-if="fieldErrors.category_ids"
