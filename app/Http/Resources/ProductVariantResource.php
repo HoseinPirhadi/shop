@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use App\Models\ProductVariant;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +17,6 @@ class ProductVariantResource extends JsonResource
     public function toArray(Request $request): array
     {
         $available = ! $this->track_inventory || $this->stock_quantity > 0;
-        $isAdmin = $request->user() instanceof User && $request->user()->isAdmin();
 
         return [
             'id' => $this->id,
