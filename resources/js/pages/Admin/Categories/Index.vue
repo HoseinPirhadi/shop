@@ -399,7 +399,7 @@ onMounted(() => loadCategories());
                     <thead class="bg-muted/50 text-right text-muted-foreground">
                         <tr>
                             <th class="px-4 py-3 font-medium">نام</th>
-                            <th class="px-4 py-3 font-medium">Slug</th>
+                            <th class="px-4 py-3 font-medium">شناسه نشانی</th>
                             <th class="px-4 py-3 font-medium">وضعیت</th>
                             <th class="px-4 py-3 font-medium">زیردسته</th>
                             <th class="px-4 py-3 font-medium">ترتیب</th>
