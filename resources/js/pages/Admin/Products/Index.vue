@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
 import ProductImageManager from '@/components/admin/ProductImageManager.vue';
+import { Head } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
 type Category = {
