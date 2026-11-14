@@ -53,6 +53,81 @@ test('public product listing can be filtered by an active category slug', functi
     expect($other->id)->not->toBe($matching->id);
 });
 
+test('public product listing searches product names and descriptions', function () {
+    $nameMatch = Product::factory()->create([
+        'name' => 'چراغ مطالعه',
+        'description' => 'نور مناسب میز کار',
+        'is_active' => true,
+    ]);
+    $descriptionMatch = Product::factory()->create([
+        'name' => 'میز اداری',
+        'description' => 'مناسب مطالعه و کار روزانه',
+        'is_active' => true,
+    ]);
+    Product::factory()->create([
+        'name' => 'صندلی',
+        'description' => 'مبلمان اداری',
+        'is_active' => true,
+    ]);
+    Product::factory()->create([
+        'name' => 'چراغ مخفی',
+        'description' => 'محصول پیش‌نویس',
+        'is_active' => false,
+    ]);
+
+    $this->getJson('/api/v1/products?q=مطالعه')
+        ->assertOk()
+        ->assertJsonCount(2, 'data')
+        ->assertJsonFragment(['id' => $nameMatch->id])
+        ->assertJsonFragment(['id' => $descriptionMatch->id]);
+});
+
+test('public product listing supports allowed sort orders', function () {
+    $zebra = Product::factory()->create(['name' => 'Zebra', 'is_active' => true]);
+    $alpha = Product::factory()->create(['name' => 'Alpha', 'is_active' => true]);
+
+    $this->getJson('/api/v1/products?sort=name_asc')
+        ->assertOk()
+        ->assertJsonPath('data.0.id', $alpha->id)
+        ->assertJsonPath('data.1.id', $zebra->id);
+
+    $this->getJson('/api/v1/products?sort=name_desc')
+        ->assertOk()
+        ->assertJsonPath('data.0.id', $zebra->id);
+});
+
+test('public product listing paginates and preserves filters in pagination links', function () {
+    Product::factory()->count(13)->create(['is_active' => true]);
+
+    $this->getJson('/api/v1/products?per_page=5&q=desk')
+        ->assertOk()
+        ->assertJsonPath('meta.per_page', 5)
+        ->assertJsonPath('meta.total', 0)
+        ->assertJsonPath('meta.last_page', 1);
+
+    Product::factory()->count(13)->create([
+        'is_active' => true,
+        'name' => 'desk accessory',
+    ]);
+
+    $this->getJson('/api/v1/products?per_page=5&q=desk')
+        ->assertOk()
+        ->assertJsonPath('meta.per_page', 5)
+        ->assertJsonPath('meta.total', 13)
+        ->assertJsonPath('meta.last_page', 3)
+        ->assertJsonPath('links.next', fn ($url) => str_contains($url, 'q=desk'));
+});
+
+test('public product listing validates filter parameters', function () {
+    $this->getJson('/api/v1/products?sort=unknown')
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('sort');
+
+    $this->getJson('/api/v1/products?per_page=1000')
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('per_page');
+});
+
 test('guests and regular users cannot access product administration', function () {
     $this->getJson('/api/v1/admin/products')->assertUnauthorized();
     $this->postJson('/api/v1/admin/products', [])->assertUnauthorized();
