@@ -2,7 +2,7 @@
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
-import PasswordInput from '@/components/PasswordInput.vue';
+import گذرواژهInput from '@/components/گذرواژهInput.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,8 +11,8 @@ import { update } from '@/routes/password';
 
 defineOptions({
     layout: {
-        title: 'Reset password',
-        description: 'Please enter your new password below',
+        title: 'بازنشانی گذرواژه',
+        description: 'گذرواژه جدید خود را وارد کنید',
     },
 });
 
@@ -22,11 +22,11 @@ const props = defineProps<{
     passwordRules: string;
 }>();
 
-const inputEmail = ref(props.email);
+const inputنشانی ایمیل = ref(props.email);
 </script>
 
 <template>
-    <Head title="Reset password" />
+    <Head title="بازنشانی گذرواژه" />
 
     <Form
         v-bind="update.form()"
@@ -36,13 +36,13 @@ const inputEmail = ref(props.email);
     >
         <div class="grid gap-6">
             <div class="grid gap-2">
-                <Label for="email">Email</Label>
+                <Label for="email">نشانی ایمیل</Label>
                 <Input
                     id="email"
                     type="email"
                     name="email"
                     autocomplete="email"
-                    v-model="inputEmail"
+                    v-model="inputنشانی ایمیل"
                     class="mt-1 block w-full"
                     readonly
                 />
@@ -50,27 +50,27 @@ const inputEmail = ref(props.email);
             </div>
 
             <div class="grid gap-2">
-                <Label for="password">Password</Label>
-                <PasswordInput
+                <Label for="password">گذرواژه</Label>
+                <گذرواژهInput
                     id="password"
                     name="password"
                     autocomplete="new-password"
                     class="mt-1 block w-full"
                     autofocus
-                    placeholder="Password"
+                    placeholder="گذرواژه"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password" />
             </div>
 
             <div class="grid gap-2">
-                <Label for="password_confirmation"> Confirm password </Label>
-                <PasswordInput
+                <Label for="password_confirmation"> تکرار گذرواژه </Label>
+                <گذرواژهInput
                     id="password_confirmation"
                     name="password_confirmation"
                     autocomplete="new-password"
                     class="mt-1 block w-full"
-                    placeholder="Confirm password"
+                    placeholder="تکرار گذرواژه"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password_confirmation" />
@@ -83,7 +83,7 @@ const inputEmail = ref(props.email);
                 data-test="reset-password-button"
             >
                 <Spinner v-if="processing" />
-                Reset password
+                بازنشانی گذرواژه
             </Button>
         </div>
     </Form>
