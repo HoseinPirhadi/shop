@@ -131,4 +131,17 @@ test('a product must keep at least one variant and nested ownership is enforced'
     $this->actingAs($admin)
         ->deleteJson('/api/v1/admin/products/'.$product->id.'/variants/'.$onlyVariant->id)
         ->assertStatus(409);
+
+    $otherVariant->inventoryMovements()->create([
+        'product_id' => $otherProduct->id,
+        'created_by' => $admin->id,
+        'quantity_delta' => 3,
+        'quantity_before' => 0,
+        'quantity_after' => 3,
+        'reason' => 'ورود موجودی',
+    ]);
+
+    $this->actingAs($admin)
+        ->deleteJson('/api/v1/admin/products/'.$otherProduct->id.'/variants/'.$otherVariant->id)
+        ->assertStatus(409);
 });
