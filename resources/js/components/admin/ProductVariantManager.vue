@@ -152,7 +152,7 @@ async function loadVariants() {
 function selectVariant(variant: Variant) {
     selectedId.value = variant.id;
     loadIntoForm(variant);
-    void loadMovements();
+    void loadMovements().catch(() => { errorMessage.value = 'دریافت سوابق موجودی انجام نشد.'; });
 }
 
 function newVariant() {
@@ -215,7 +215,13 @@ async function adjustInventory() {
         );
         quantityDelta.value = 0;
         reason.value = '';
+        const currentVariantId = selectedId.value;
         await loadVariants();
+        const currentVariant = variants.value.find((item) => item.id === currentVariantId);
+        if (currentVariant) {
+            selectedId.value = currentVariant.id;
+            loadIntoForm(currentVariant);
+        }
         await loadMovements();
     } catch (error) {
         errorMessage.value = (error as ApiError).message ?? 'ثبت تغییر موجودی انجام نشد.';
