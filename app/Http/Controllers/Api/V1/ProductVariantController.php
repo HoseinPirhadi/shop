@@ -149,7 +149,7 @@ class ProductVariantController extends Controller
             return $lockedVariant->refresh();
         });
 
-        return new ProductVariantResource($updated);
+        return new AdminProductVariantResource($updated);
     }
 
     public function movements(Product $product, ProductVariant $variant): AnonymousResourceCollection
