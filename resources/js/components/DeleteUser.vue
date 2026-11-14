@@ -39,9 +39,9 @@ const passwordInput = useTemplateRef('passwordInput');
             </div>
             <Dialog>
                 <DialogTrigger as-child>
-                    <Button variant="destructive" data-test="delete-user-button"
-                        >حذف حساب کاربری</Button
-                    >
+                    <Button variant="destructive" data-test="delete-user-button">
+                        حذف حساب کاربری
+                    </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <Form
@@ -55,10 +55,9 @@ const passwordInput = useTemplateRef('passwordInput');
                         v-slot="{ errors, processing, reset, clearErrors }"
                     >
                         <DialogHeader class="space-y-3">
-                            <DialogTitle
-                                >آیا از حذف حساب کاربری خود مطمئن
-                                هستید؟</DialogTitle
-                            >
+                            <DialogTitle>
+                                آیا از حذف حساب کاربری خود مطمئن هستید؟
+                            </DialogTitle>
                             <DialogDescription>
                                 پس از حذف حساب، همه منابع و اطلاعات مرتبط نیز
                                 برای همیشه حذف می‌شوند. برای تأیید این عملیات،
@@ -67,11 +66,15 @@ const passwordInput = useTemplateRef('passwordInput');
                         </DialogHeader>
 
                         <div class="grid gap-2">
-                            <Label for="password" class="sr-only"
-                                >گذرواژه</Label
-                            >
-                            <PasswordInput id="password" name="password"
-                            ref="passwordInput" placeholder="گذرواژه" />
+                            <Label for="password" class="sr-only">
+                                گذرواژه
+                            </Label>
+                            <PasswordInput
+                                id="password"
+                                name="password"
+                                ref="passwordInput"
+                                placeholder="گذرواژه"
+                            />
                             <InputError :message="errors.password" />
                         </div>
 
