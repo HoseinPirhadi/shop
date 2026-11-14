@@ -56,15 +56,10 @@ const passwordInput = useTemplateRef('passwordInput');
                     >
                         <DialogHeader class="space-y-3">
                             <DialogTitle
-                                >Are you sure you want to delete your
-                                account?</DialogTitle
+                                >آیا از حذف حساب کاربری خود مطمئن هستید؟</DialogTitle
                             >
                             <DialogDescription>
-                                Once your account is deleted, all of its
-                                resources and data will also be permanently
-                                deleted. Please enter your password to confirm
-                                you would like to permanently delete your
-                                account.
+                                پس از حذف حساب، همه منابع و اطلاعات مرتبط نیز برای همیشه حذف می‌شوند. برای تأیید این عملیات، گذرواژه خود را وارد کنید.
                             </DialogDescription>
                         </DialogHeader>
 
