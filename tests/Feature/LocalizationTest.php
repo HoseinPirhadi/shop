@@ -7,7 +7,7 @@ test('application uses Persian locale and renders an RTL document', function () 
     $this->get('/login')
         ->assertOk()
         ->assertSee('lang="fa" dir="rtl"', false)
-        ->assertSee('ورود به حساب');
+        ->assertSee('ورود به حساب کاربری');
 });
 
 test('common validation errors are translated into Persian', function () {
