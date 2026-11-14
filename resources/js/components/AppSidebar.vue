@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, FolderTree, LayoutGrid } from '@lucide/vue';
+import {
+    BookOpen,
+    FolderGit2,
+    FolderTree,
+    LayoutGrid,
+    Package,
+} from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -30,11 +36,18 @@ const mainNavItems = computed<NavItem[]>(() => {
     ];
 
     if (page.props.auth.user?.is_admin) {
-        items.push({
-            title: 'Categories',
-            href: '/admin/categories',
-            icon: FolderTree,
-        });
+        items.push(
+            {
+                title: 'Categories',
+                href: '/admin/categories',
+                icon: FolderTree,
+            },
+            {
+                title: 'Products',
+                href: '/admin/products',
+                icon: Package,
+            },
+        );
     }
 
     return items;
