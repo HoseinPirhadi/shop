@@ -34,7 +34,7 @@ class ProductVariantController extends Controller
                 $lockedProduct->variants()->update(['is_default' => false]);
             }
 
-            return $lockedProduct->variants()->create($data);
+            return $lockedProduct->variants()->create($data)->refresh();
         });
 
         return (new AdminProductVariantResource($variant))
