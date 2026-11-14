@@ -31,8 +31,14 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Prepare Laravel environment
+        run: cp .env.example .env
+
       - name: Install PHP dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Generate application key
+        run: php artisan key:generate
 
       - name: Check PHP formatting
         run: composer run lint:check
@@ -50,6 +56,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up PHP for Wayfinder
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: ctype, curl, dom, fileinfo, filter, hash, mbstring, openssl, pdo, pdo_sqlite, session, tokenizer, xml
+          coverage: none
+          tools: composer:v2
+
+      - name: Prepare Laravel environment
+        run: cp .env.example .env
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Generate application key
+        run: php artisan key:generate
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
