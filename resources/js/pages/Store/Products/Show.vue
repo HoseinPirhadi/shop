@@ -8,12 +8,19 @@ type Category = {
     slug: string;
 };
 
+type ProductImage = {
+    id: number;
+    url: string;
+    alt: string | null;
+};
+
 type Product = {
     id: number;
     name: string;
     slug: string;
     description: string | null;
     categories: Category[];
+    images: ProductImage[];
 };
 
 const props = defineProps<{ slug: string }>();
@@ -68,6 +75,19 @@ onMounted(async () => {
     <article v-else-if="product" class="mx-auto max-w-3xl">
         <div class="rounded-2xl border p-6 sm:p-10">
             <div
+                v-if="product.images.length"
+                class="mb-8 grid gap-3 sm:grid-cols-2"
+            >
+                <img
+                    v-for="image in product.images"
+                    :key="image.id"
+                    :src="image.url"
+                    :alt="image.alt ?? product.name"
+                    class="aspect-[4/3] w-full rounded-xl bg-muted object-cover"
+                />
+            </div>
+            <div
+                v-else
                 class="mb-8 flex aspect-[16/9] items-center justify-center rounded-xl bg-muted text-sm text-muted-foreground"
             >
                 تصویر محصول
