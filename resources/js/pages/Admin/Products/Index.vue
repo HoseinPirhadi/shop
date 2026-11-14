@@ -434,7 +434,9 @@ onMounted(async () => {
                                             : 'text-muted-foreground'
                                     "
                                 >
-                                    {{ product.is_active ? 'فعال' : 'پیش‌نویس' }}
+                                    {{
+                                        product.is_active ? 'فعال' : 'پیش‌نویس'
+                                    }}
                                 </span>
                             </td>
                             <td class="px-4 py-3">
