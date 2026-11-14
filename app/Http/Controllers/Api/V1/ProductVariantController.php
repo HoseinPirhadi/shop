@@ -58,11 +58,16 @@ class ProductVariantController extends Controller
                 if ($data['is_default']) {
                     $lockedProduct->variants()->where('id', '<>', $lockedVariant->id)->update(['is_default' => false]);
                 } elseif ($lockedVariant->is_default) {
-                    $lockedProduct->variants()
+                    $replacement = $lockedProduct->variants()
                         ->where('id', '<>', $lockedVariant->id)
                         ->orderBy('id')
-                        ->first()
-                        ?->update(['is_default' => true]);
+                        ->first();
+
+                    if ($replacement !== null) {
+                        $replacement->update(['is_default' => true]);
+                    } else {
+                        $data['is_default'] = true;
+                    }
                 }
             }
 
@@ -84,6 +89,10 @@ class ProductVariantController extends Controller
 
             if ($lockedProduct->variants()->count() <= 1) {
                 abort(409, 'هر محصول باید حداقل یک گونه داشته باشد.');
+            }
+
+            if ($lockedVariant->inventoryMovements()->exists()) {
+                abort(409, 'گونه دارای سابقه موجودی است؛ برای حفظ سوابق آن را غیرفعال کنید.');
             }
 
             $wasDefault = $lockedVariant->is_default;
