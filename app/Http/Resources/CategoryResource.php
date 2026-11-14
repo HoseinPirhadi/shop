@@ -24,7 +24,6 @@ class CategoryResource extends JsonResource
             'sort_order' => $this->sort_order,
             'is_active' => $this->is_active,
             'children_count' => $this->whenCounted('children'),
-            'parent' => new self($this->whenLoaded('parent')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
