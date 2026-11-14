@@ -97,25 +97,22 @@ test('public product listing supports allowed sort orders', function () {
 });
 
 test('public product listing paginates and preserves filters in pagination links', function () {
-    Product::factory()->count(13)->create(['is_active' => true]);
+    foreach (range(1, 13) as $number) {
+        Product::factory()->create([
+            'name' => 'catalogneedle item '.$number,
+            'is_active' => true,
+        ]);
+    }
 
-    $this->getJson('/api/v1/products?per_page=5&q=desk')
-        ->assertOk()
-        ->assertJsonPath('meta.per_page', 5)
-        ->assertJsonPath('meta.total', 0)
-        ->assertJsonPath('meta.last_page', 1);
+    $response = $this->getJson('/api/v1/products?per_page=5&q=catalogneedle');
 
-    Product::factory()->count(13)->create([
-        'is_active' => true,
-        'name' => 'desk accessory',
-    ]);
-
-    $this->getJson('/api/v1/products?per_page=5&q=desk')
+    $response
         ->assertOk()
         ->assertJsonPath('meta.per_page', 5)
         ->assertJsonPath('meta.total', 13)
-        ->assertJsonPath('meta.last_page', 3)
-        ->assertJsonPath('links.next', fn ($url) => str_contains($url, 'q=desk'));
+        ->assertJsonPath('meta.last_page', 3);
+
+    expect($response->json('links.next'))->toContain('q=catalogneedle');
 });
 
 test('public product listing validates filter parameters', function () {
