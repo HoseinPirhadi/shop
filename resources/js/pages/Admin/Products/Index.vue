@@ -452,7 +452,7 @@ onMounted(async () => {
                         <tr>
                             <th class="px-4 py-3 font-medium">تصویر</th>
                             <th class="px-4 py-3 font-medium">نام</th>
-                            <th class="px-4 py-3 font-medium">Slug</th>
+                            <th class="px-4 py-3 font-medium">شناسه نشانی</th>
                             <th class="px-4 py-3 font-medium">دسته‌بندی‌ها</th>
                             <th class="px-4 py-3 font-medium">وضعیت</th>
                             <th class="px-4 py-3 font-medium">ترتیب</th>
