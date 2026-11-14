@@ -20,7 +20,6 @@ class StoreSettingResource extends JsonResource
             'store_name' => $this->store_name,
             'currency_code' => $this->currency_code,
             'currency_configured' => $this->hasConfiguredCurrency(),
-            'checkout_enabled' => $this->hasConfiguredCurrency(),
         ];
     }
 }
