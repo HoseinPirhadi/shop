@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\\Models;
 
-use Database\Factories\ProductFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Carbon;
+use Database\\Factories\\ProductFactory;
+use Illuminate\\Database\\Eloquent\\Factories\\HasFactory;
+use Illuminate\\Database\\Eloquent\\Model;
+use Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany;
+use Illuminate\\Database\\Eloquent\\Relations\\HasMany;
+use Illuminate\\Support\\Carbon;
 
 /**
  * @property int $id
@@ -32,6 +32,18 @@ class Product extends Model
         'sort_order',
         'is_active',
     ];
+
+    protected static function booted(): void
+    {
+        static::created(function (Product $product): void {
+            $product->variants()->create([
+                'name' => 'پیش‌فرض',
+                'is_default' => true,
+                'track_inventory' => true,
+                'stock_quantity' => 0,
+            ]);
+        });
+    }
 
     /**
      * @return array<string, string>
@@ -58,5 +70,13 @@ class Product extends Model
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    /**
+     * @return HasMany<ProductVariant, $this>
+     */
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class);
     }
 }
