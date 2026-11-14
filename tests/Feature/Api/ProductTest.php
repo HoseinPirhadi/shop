@@ -39,6 +39,20 @@ test('public product responses only include active categories', function () {
         ->assertJsonPath('data.0.categories.0.id', $activeCategory->id);
 });
 
+test('public product listing can be filtered by an active category slug', function () {
+    $category = Category::factory()->create(['slug' => 'desk-accessories', 'is_active' => true]);
+    $matching = Product::factory()->create(['is_active' => true]);
+    $matching->categories()->attach($category);
+    $other = Product::factory()->create(['is_active' => true]);
+
+    $this->getJson('/api/v1/products?category=desk-accessories')
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.id', $matching->id);
+
+    expect($other->id)->not->toBe($matching->id);
+});
+
 test('guests and regular users cannot access product administration', function () {
     $this->getJson('/api/v1/admin/products')->assertUnauthorized();
     $this->postJson('/api/v1/admin/products', [])->assertUnauthorized();
