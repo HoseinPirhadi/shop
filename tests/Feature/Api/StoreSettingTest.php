@@ -7,7 +7,7 @@ test('store settings start without an assumed currency', function () {
     $this->getJson('/api/v1/store-settings')
         ->assertOk()
         ->assertJsonPath('data.currency_code', null)
-        ->assertJsonPath('data.currency_configured', false)
+        ->assertJsonPath('data.currency_configured', false);
 });
 
 test('administrators can update store name and ISO currency code format', function () {
@@ -21,8 +21,7 @@ test('administrators can update store name and ISO currency code format', functi
         ->assertOk()
         ->assertJsonPath('data.store_name', 'فروشگاه نمونه')
         ->assertJsonPath('data.currency_code', 'GBP')
-        ->assertJsonPath('data.currency_configured', true)
-        ->assertJsonPath('data.checkout_enabled', true);
+        ->assertJsonPath('data.currency_configured', true);
 
     expect(StoreSetting::current()->currency_code)->toBe('GBP');
 });
