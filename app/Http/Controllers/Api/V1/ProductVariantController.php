@@ -54,8 +54,16 @@ class ProductVariantController extends Controller
             $lockedProduct = Product::query()->whereKey($product->id)->lockForUpdate()->firstOrFail();
             $lockedVariant = $lockedProduct->variants()->whereKey($variant->id)->lockForUpdate()->firstOrFail();
 
-            if ($data['is_default'] ?? false) {
-                $lockedProduct->variants()->where('id', '<>', $lockedVariant->id)->update(['is_default' => false]);
+            if (array_key_exists('is_default', $data)) {
+                if ($data['is_default']) {
+                    $lockedProduct->variants()->where('id', '<>', $lockedVariant->id)->update(['is_default' => false]);
+                } elseif ($lockedVariant->is_default) {
+                    $lockedProduct->variants()
+                        ->where('id', '<>', $lockedVariant->id)
+                        ->orderBy('id')
+                        ->first()
+                        ?->update(['is_default' => true]);
+                }
             }
 
             $lockedVariant->update($data);
