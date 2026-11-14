@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import ProductListing from '@/components/store/ProductListing.vue';
+import { Head } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
 type Category = {
@@ -9,47 +10,29 @@ type Category = {
     parent_id: number | null;
 };
 
-type Product = {
-    id: number;
-    name: string;
-    slug: string;
-    description: string | null;
-    categories: Category[];
-};
-
 const categories = ref<Category[]>([]);
-const products = ref<Product[]>([]);
 const loading = ref(true);
 const errorMessage = ref('');
 
 onMounted(async () => {
     try {
-        const [categoryResponse, productResponse] = await Promise.all([
-            fetch('/api/v1/categories', {
-                headers: { Accept: 'application/json' },
-            }),
-            fetch('/api/v1/products', {
-                headers: { Accept: 'application/json' },
-            }),
-        ]);
+        const response = await fetch('/api/v1/categories', {
+            headers: { Accept: 'application/json' },
+        });
 
-        if (!categoryResponse.ok || !productResponse.ok) {
-            throw new Error('دریافت اطلاعات فروشگاه ناموفق بود.');
+        if (!response.ok) {
+            throw new Error('دریافت دسته‌بندی‌ها ناموفق بود.');
         }
 
-        const categoryPayload = (await categoryResponse.json()) as {
+        const payload = (await response.json()) as {
             data: Category[];
         };
-        const productPayload = (await productResponse.json()) as {
-            data: Product[];
-        };
 
-        categories.value = categoryPayload.data.filter(
+        categories.value = payload.data.filter(
             (category) => category.parent_id === null,
         );
-        products.value = productPayload.data;
     } catch {
-        errorMessage.value = 'در حال حاضر دریافت اطلاعات فروشگاه ممکن نیست.';
+        errorMessage.value = 'در حال حاضر دریافت دسته‌بندی‌ها ممکن نیست.';
     } finally {
         loading.value = false;
     }
@@ -67,7 +50,7 @@ onMounted(async () => {
             محصولات موردنظرتان را پیدا کنید
         </h1>
         <p class="mt-4 max-w-2xl leading-7 text-muted-foreground">
-            دسته‌بندی‌ها را مرور کنید و محصولات موجود در فروشگاه را ببینید.
+            دسته‌بندی‌ها را مرور کنید یا محصول موردنظرتان را جستجو کنید.
         </p>
     </section>
 
@@ -80,9 +63,7 @@ onMounted(async () => {
     </div>
 
     <section class="mb-12">
-        <div class="mb-5 flex items-center justify-between gap-4">
-            <h2 class="text-xl font-semibold">دسته‌بندی‌ها</h2>
-        </div>
+        <h2 class="mb-5 text-xl font-semibold">دسته‌بندی‌ها</h2>
 
         <p v-if="loading" class="text-sm text-muted-foreground">
             در حال دریافت دسته‌بندی‌ها...
@@ -94,7 +75,7 @@ onMounted(async () => {
             هنوز دسته‌بندی فعالی ثبت نشده است.
         </p>
         <div v-else class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link
+            <a
                 v-for="category in categories"
                 :key="category.id"
                 :href="'/categories/' + category.slug"
@@ -104,56 +85,9 @@ onMounted(async () => {
                 <span class="mt-2 block text-sm text-muted-foreground">
                     مشاهده محصولات
                 </span>
-            </Link>
+            </a>
         </div>
     </section>
 
-    <section>
-        <div class="mb-5 flex items-center justify-between gap-4">
-            <h2 class="text-xl font-semibold">محصولات</h2>
-        </div>
-
-        <p v-if="loading" class="text-sm text-muted-foreground">
-            در حال دریافت محصولات...
-        </p>
-        <p
-            v-else-if="products.length === 0"
-            class="rounded-lg border p-6 text-sm text-muted-foreground"
-        >
-            هنوز محصول فعالی برای نمایش وجود ندارد.
-        </p>
-        <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <article
-                v-for="product in products"
-                :key="product.id"
-                class="flex flex-col rounded-xl border p-5"
-            >
-                <h3 class="font-semibold">{{ product.name }}</h3>
-                <p
-                    class="mt-2 line-clamp-3 flex-1 text-sm leading-6 text-muted-foreground"
-                >
-                    {{
-                        product.description ||
-                        'توضیحاتی برای این محصول ثبت نشده است.'
-                    }}
-                </p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <Link
-                        v-for="category in product.categories"
-                        :key="category.id"
-                        :href="'/categories/' + category.slug"
-                        class="rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground"
-                    >
-                        {{ category.name }}
-                    </Link>
-                </div>
-                <Link
-                    :href="'/products/' + product.slug"
-                    class="mt-5 text-sm font-medium text-primary hover:underline"
-                >
-                    مشاهده جزئیات
-                </Link>
-            </article>
-        </div>
-    </section>
+    <ProductListing heading="همه محصولات" />
 </template>
