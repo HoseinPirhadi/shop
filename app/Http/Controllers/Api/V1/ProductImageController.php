@@ -65,47 +65,59 @@ class ProductImageController extends Controller
 
         $data = $request->validated();
 
-        DB::transaction(function () use ($data, $product, $image): void {
-            Product::query()
+        $updatedImage = DB::transaction(function () use ($data, $product, $image): ProductImage {
+            $lockedProduct = Product::query()
                 ->whereKey($product->id)
                 ->lockForUpdate()
                 ->firstOrFail();
 
+            $lockedImage = $lockedProduct->images()
+                ->whereKey($image->id)
+                ->firstOrFail();
+
             if (array_key_exists('is_primary', $data)) {
-                $product->images()
-                    ->where('id', '<>', $image->id)
+                $lockedProduct->images()
+                    ->where('id', '<>', $lockedImage->id)
                     ->update(['is_primary' => false]);
                 $data['is_primary'] = true;
             }
 
-            $image->update($data);
+            $lockedImage->update($data);
+
+            return $lockedImage;
         });
 
-        return new ProductImageResource($image->fresh());
+        return new ProductImageResource($updatedImage);
     }
 
     public function destroy(Product $product, ProductImage $image): JsonResponse
     {
         abort_unless($image->product_id === $product->id, 404);
 
-        $path = $image->path;
-
-        DB::transaction(function () use ($image, $product): void {
-            Product::query()
+        $path = DB::transaction(function () use ($image, $product): string {
+            $lockedProduct = Product::query()
                 ->whereKey($product->id)
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $wasPrimary = $image->is_primary;
-            $image->delete();
+            $lockedImage = $lockedProduct->images()
+                ->whereKey($image->id)
+                ->firstOrFail();
+
+            $imagePath = $lockedImage->path;
+            $wasPrimary = $lockedImage->is_primary;
+
+            $lockedImage->delete();
 
             if ($wasPrimary) {
-                $product->images()
+                $lockedProduct->images()
                     ->orderBy('sort_order')
                     ->orderBy('id')
                     ->first()
                     ?->update(['is_primary' => true]);
             }
+
+            return $imagePath;
         });
 
         Storage::disk('public')->delete($path);
