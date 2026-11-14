@@ -1,19 +1,19 @@
 <?php
 
-namespace App\\Http\\Controllers\\Api\\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use App\\Http\\Controllers\\Controller;
-use App\\Http\\Requests\\StoreProductVariantRequest;
-use App\\Http\\Requests\\UpdateProductVariantRequest;
-use App\\Http\\Resources\\ProductVariantMovementResource;
-use App\\Http\\Resources\\ProductVariantResource;
-use App\\Models\\InventoryMovement;
-use App\\Models\\Product;
-use App\\Models\\ProductVariant;
-use Illuminate\\Http\\JsonResponse;
-use Illuminate\\Http\\Request;
-use Illuminate\\Http\\Resources\\Json\\AnonymousResourceCollection;
-use Illuminate\\Support\\Facades\\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductVariantRequest;
+use App\Http\Requests\UpdateProductVariantRequest;
+use App\Http\Resources\ProductVariantMovementResource;
+use App\Http\Resources\ProductVariantResource;
+use App\Models\InventoryMovement;
+use App\Models\Product;
+use App\Models\ProductVariant;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class ProductVariantController extends Controller
 {
