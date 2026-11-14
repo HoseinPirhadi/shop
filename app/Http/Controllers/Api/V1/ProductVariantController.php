@@ -5,6 +5,7 @@ namespace App\\Http\\Controllers\\Api\\V1;
 use App\\Http\\Controllers\\Controller;
 use App\\Http\\Requests\\StoreProductVariantRequest;
 use App\\Http\\Requests\\UpdateProductVariantRequest;
+use App\\Http\\Resources\\ProductVariantMovementResource;
 use App\\Http\\Resources\\ProductVariantResource;
 use App\\Models\\InventoryMovement;
 use App\\Models\\Product;
@@ -54,7 +55,7 @@ class ProductVariantController extends Controller
             $lockedVariant = $lockedProduct->variants()->whereKey($variant->id)->lockForUpdate()->firstOrFail();
 
             if ($data['is_default'] ?? false) {
-                $lockedProduct->variants()->whereKeyNot($lockedVariant->id)->update(['is_default' => false]);
+                $lockedProduct->variants()->where('id', '<>', $lockedVariant->id)->update(['is_default' => false]);
             }
 
             $lockedVariant->update($data);
