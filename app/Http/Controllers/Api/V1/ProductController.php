@@ -8,15 +8,26 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $products = Product::query()
+        $query = Product::query()
             ->with(['categories' => fn ($query) => $query->where('is_active', true)])
-            ->where('is_active', true)
+            ->where('is_active', true);
+
+        $categorySlug = $request->query('category');
+
+        if (is_string($categorySlug) && $categorySlug !== '') {
+            $query->whereHas('categories', fn ($categories) => $categories
+                ->where('slug', $categorySlug)
+                ->where('is_active', true));
+        }
+
+        $products = $query
             ->orderBy('sort_order')
             ->orderBy('name')
             ->paginate(30);
