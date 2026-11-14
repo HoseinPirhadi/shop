@@ -42,7 +42,6 @@ class CategoryController extends Controller
     public function adminIndex(): AnonymousResourceCollection
     {
         $categories = Category::query()
-            ->with('parent')
             ->withCount('children')
             ->orderBy('sort_order')
             ->orderBy('name')
