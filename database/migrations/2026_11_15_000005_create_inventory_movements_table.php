@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('product_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('product_variant_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->integer('quantity_delta');
+            $table->bigInteger('quantity_delta');
             $table->unsignedInteger('quantity_before');
             $table->unsignedInteger('quantity_after');
             $table->string('reason', 500);
