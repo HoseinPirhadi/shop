@@ -8,12 +8,20 @@ type Category = {
     slug: string;
 };
 
+type ProductImage = {
+    id: number;
+    url: string;
+    alt: string | null;
+    is_primary: boolean;
+};
+
 type Product = {
     id: number;
     name: string;
     slug: string;
     description: string | null;
     categories: Category[];
+    images: ProductImage[];
 };
 
 type ProductPagination = {
@@ -222,6 +230,18 @@ onBeforeUnmount(() => {
                 :key="product.id"
                 class="flex flex-col rounded-xl border p-5 transition hover:border-primary/50"
             >
+                <img
+                    v-if="product.images.length"
+                    :src="product.images[0].url"
+                    :alt="product.images[0].alt ?? product.name"
+                    class="mb-4 aspect-[4/3] w-full rounded-lg bg-muted object-cover"
+                />
+                <div
+                    v-else
+                    class="mb-4 flex aspect-[4/3] items-center justify-center rounded-lg bg-muted text-sm text-muted-foreground"
+                >
+                    تصویر محصول
+                </div>
                 <h3 class="font-semibold">{{ product.name }}</h3>
                 <p
                     class="mt-2 line-clamp-3 flex-1 text-sm leading-6 text-muted-foreground"
