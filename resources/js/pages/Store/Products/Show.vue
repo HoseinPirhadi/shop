@@ -14,6 +14,13 @@ type ProductImage = {
     alt: string | null;
 };
 
+type ProductVariant = {
+    id: number;
+    name: string;
+    options: Record<string, string> | null;
+    is_available: boolean;
+};
+
 type Product = {
     id: number;
     name: string;
@@ -21,6 +28,7 @@ type Product = {
     description: string | null;
     categories: Category[];
     images: ProductImage[];
+    variants: ProductVariant[];
 };
 
 const props = defineProps<{ slug: string }>();
@@ -101,6 +109,30 @@ onMounted(async () => {
                     'توضیحاتی برای این محصول ثبت نشده است.'
                 }}
             </p>
+
+            <div v-if="product.variants.length" class="mt-8">
+                <h2 class="mb-3 text-sm font-semibold">گونه‌های محصول</h2>
+                <div class="grid gap-2 sm:grid-cols-2">
+                    <div
+                        v-for="variant in product.variants"
+                        :key="variant.id"
+                        class="rounded-lg border px-3 py-2"
+                    >
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-sm font-medium">{{ variant.name }}</span>
+                            <span
+                                class="text-xs"
+                                :class="variant.is_available ? 'text-green-600' : 'text-muted-foreground'"
+                            >
+                                {{ variant.is_available ? 'موجود' : 'ناموجود' }}
+                            </span>
+                        </div>
+                        <p v-if="variant.options && Object.keys(variant.options).length" class="mt-1 text-xs text-muted-foreground">
+                            {{ Object.entries(variant.options).map(([key, value]) => key + ': ' + value).join('، ') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <div v-if="product.categories.length" class="mt-8">
                 <h2 class="mb-3 text-sm font-semibold">دسته‌بندی‌ها</h2>
