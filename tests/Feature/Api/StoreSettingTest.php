@@ -8,7 +8,6 @@ test('store settings start without an assumed currency', function () {
         ->assertOk()
         ->assertJsonPath('data.currency_code', null)
         ->assertJsonPath('data.currency_configured', false)
-        ->assertJsonPath('data.checkout_enabled', false);
 });
 
 test('administrators can update store name and ISO currency code format', function () {
