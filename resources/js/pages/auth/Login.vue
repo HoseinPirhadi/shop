@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
-import گذرواژهInput from '@/components/گذرواژهInput.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -21,7 +21,7 @@ defineOptions({
 
 defineProps<{
     status?: string;
-    canResetگذرواژه: boolean;
+    canResetPassword: boolean;
 }>();
 </script>
 
@@ -61,7 +61,7 @@ defineProps<{
                 <div class="flex items-center justify-between">
                     <Label for="password">گذرواژه</Label>
                     <TextLink
-                        v-if="canResetگذرواژه"
+                        v-if="canResetPassword"
                         :href="request()"
                         class="text-sm"
                         :tabindex="5"
@@ -69,7 +69,7 @@ defineProps<{
                         گذرواژه را فراموش کرده‌اید؟
                     </TextLink>
                 </div>
-                <گذرواژهInput
+                <PasswordInput
                     id="password"
                     name="password"
                     required
