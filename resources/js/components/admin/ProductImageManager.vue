@@ -34,9 +34,7 @@ function selectFile(event: Event) {
     const target = event.target;
 
     selectedFile.value =
-        target instanceof HTMLInputElement
-            ? (target.files?.[0] ?? null)
-            : null;
+        target instanceof HTMLInputElement ? (target.files?.[0] ?? null) : null;
 }
 
 function csrfToken(): string {
@@ -44,9 +42,7 @@ function csrfToken(): string {
         .split('; ')
         .find((item) => item.startsWith('XSRF-TOKEN='));
 
-    return cookie
-        ? decodeURIComponent(cookie.slice('XSRF-TOKEN='.length))
-        : '';
+    return cookie ? decodeURIComponent(cookie.slice('XSRF-TOKEN='.length)) : '';
 }
 
 async function uploadImage() {
@@ -103,10 +99,7 @@ async function deleteImage(image: ProductImage) {
 
     try {
         const response = await fetch(
-            '/api/v1/admin/products/' +
-                props.productId +
-                '/images/' +
-                image.id,
+            '/api/v1/admin/products/' + props.productId + '/images/' + image.id,
             {
                 method: 'DELETE',
                 credentials: 'same-origin',
@@ -142,10 +135,7 @@ async function setPrimary(image: ProductImage) {
 
     try {
         const response = await fetch(
-            '/api/v1/admin/products/' +
-                props.productId +
-                '/images/' +
-                image.id,
+            '/api/v1/admin/products/' + props.productId + '/images/' + image.id,
             {
                 method: 'PATCH',
                 credentials: 'same-origin',
@@ -171,7 +161,8 @@ async function setPrimary(image: ProductImage) {
             is_primary: item.id === payload.data.id,
         }));
         updatedImages.sort(
-            (first, second) => Number(second.is_primary) - Number(first.is_primary),
+            (first, second) =>
+                Number(second.is_primary) - Number(first.is_primary),
         );
         emit('update:images', updatedImages);
     } catch (error) {
@@ -200,7 +191,10 @@ async function setPrimary(image: ProductImage) {
             {{ errorMessage }}
         </div>
 
-        <div v-if="images.length" class="mb-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div
+            v-if="images.length"
+            class="mb-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-4"
+        >
             <article
                 v-for="image in images"
                 :key="image.id"
@@ -228,7 +222,11 @@ async function setPrimary(image: ProductImage) {
                         class="text-xs text-primary hover:underline disabled:opacity-50"
                         @click="setPrimary(image)"
                     >
-                        {{ updatingId === image.id ? '...' : 'انتخاب به‌عنوان اصلی' }}
+                        {{
+                            updatingId === image.id
+                                ? '...'
+                                : 'انتخاب به‌عنوان اصلی'
+                        }}
                     </button>
                     <button
                         type="button"
@@ -236,12 +234,19 @@ async function setPrimary(image: ProductImage) {
                         class="block text-xs text-destructive hover:underline disabled:opacity-50"
                         @click="deleteImage(image)"
                     >
-                        {{ deletingId === image.id ? 'در حال حذف...' : 'حذف تصویر' }}
+                        {{
+                            deletingId === image.id
+                                ? 'در حال حذف...'
+                                : 'حذف تصویر'
+                        }}
                     </button>
                 </div>
             </article>
         </div>
-        <p v-else class="mb-5 rounded-md bg-muted/50 p-4 text-sm text-muted-foreground">
+        <p
+            v-else
+            class="mb-5 rounded-md bg-muted/50 p-4 text-sm text-muted-foreground"
+        >
             هنوز تصویری برای این محصول بارگذاری نشده است.
         </p>
 
