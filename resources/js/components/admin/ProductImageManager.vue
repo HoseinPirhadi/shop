@@ -166,13 +166,14 @@ async function setPrimary(image: ProductImage) {
             throw payload;
         }
 
-        emit(
-            'update:images',
-            props.images.map((item) => ({
-                ...item,
-                is_primary: item.id === payload.data.id,
-            })),
+        const updatedImages = props.images.map((item) => ({
+            ...item,
+            is_primary: item.id === payload.data.id,
+        }));
+        updatedImages.sort(
+            (first, second) => Number(second.is_primary) - Number(first.is_primary),
         );
+        emit('update:images', updatedImages);
     } catch (error) {
         errorMessage.value =
             (error as ApiError).message ?? 'تغییر تصویر اصلی انجام نشد.';
