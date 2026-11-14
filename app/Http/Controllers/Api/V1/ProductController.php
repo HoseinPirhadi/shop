@@ -10,6 +10,7 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -24,7 +25,10 @@ class ProductController extends Controller
         ]);
 
         $query = Product::query()
-            ->with(['categories' => fn ($query) => $query->where('is_active', true)])
+            ->with([
+                'categories' => fn ($query) => $query->where('is_active', true),
+                'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+            ])
             ->where('is_active', true);
 
         if (! empty($filters['category'])) {
@@ -58,7 +62,10 @@ class ProductController extends Controller
     public function show(string $slug): ProductResource|JsonResponse
     {
         $product = Product::query()
-            ->with(['categories' => fn ($query) => $query->where('is_active', true)])
+            ->with([
+                'categories' => fn ($query) => $query->where('is_active', true),
+                'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+            ])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->first();
@@ -75,7 +82,10 @@ class ProductController extends Controller
     public function adminIndex(): AnonymousResourceCollection
     {
         $products = Product::query()
-            ->with('categories')
+            ->with([
+                'categories',
+                'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+            ])
             ->orderBy('sort_order')
             ->orderBy('name')
             ->paginate(30);
@@ -92,7 +102,7 @@ class ProductController extends Controller
         $product = Product::query()->create($data);
         $product->categories()->sync($categoryIds);
 
-        return (new ProductResource($product->load('categories')))
+        return (new ProductResource($product->load(['categories', 'images'])))
             ->response()
             ->setStatusCode(201);
     }
@@ -108,11 +118,12 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        return new ProductResource($product->load('categories'));
+        return new ProductResource($product->load(['categories', 'images']));
     }
 
     public function destroy(Product $product): JsonResponse
     {
+        Storage::disk('public')->delete($product->images()->pluck('path')->all());
         $product->delete();
 
         return response()->json(status: 204);
