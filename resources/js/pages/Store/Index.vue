@@ -59,10 +59,10 @@ onMounted(async () => {
 <template>
     <Head title="فروشگاه" />
 
-    <section
-        class="mb-10 rounded-2xl bg-muted/50 px-6 py-10 sm:px-10 sm:py-14"
-    >
-        <p class="mb-3 text-sm font-medium text-primary">به فروشگاه خوش آمدید</p>
+    <section class="mb-10 rounded-2xl bg-muted/50 px-6 py-10 sm:px-10 sm:py-14">
+        <p class="mb-3 text-sm font-medium text-primary">
+            به فروشگاه خوش آمدید
+        </p>
         <h1 class="max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
             محصولات موردنظرتان را پیدا کنید
         </h1>
@@ -129,8 +129,13 @@ onMounted(async () => {
                 class="flex flex-col rounded-xl border p-5"
             >
                 <h3 class="font-semibold">{{ product.name }}</h3>
-                <p class="mt-2 line-clamp-3 flex-1 text-sm leading-6 text-muted-foreground">
-                    {{ product.description || 'توضیحاتی برای این محصول ثبت نشده است.' }}
+                <p
+                    class="mt-2 line-clamp-3 flex-1 text-sm leading-6 text-muted-foreground"
+                >
+                    {{
+                        product.description ||
+                        'توضیحاتی برای این محصول ثبت نشده است.'
+                    }}
                 </p>
                 <div class="mt-4 flex flex-wrap gap-2">
                     <Link
