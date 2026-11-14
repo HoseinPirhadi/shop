@@ -48,7 +48,8 @@ const hasProducts = computed(() => products.value.length > 0);
 
 async function loadProducts() {
     activeRequest?.abort();
-    activeRequest = new AbortController();
+    const controller = new AbortController();
+    activeRequest = controller;
     loading.value = true;
     errorMessage.value = '';
 
@@ -64,7 +65,7 @@ async function loadProducts() {
     try {
         const response = await fetch('/api/v1/products?' + params.toString(), {
             headers: { Accept: 'application/json' },
-            signal: activeRequest.signal,
+            signal: controller.signal,
         });
 
         if (!response.ok) {
@@ -84,7 +85,7 @@ async function loadProducts() {
         pagination.value = null;
         errorMessage.value = 'در حال حاضر دریافت محصولات ممکن نیست.';
     } finally {
-        if (!activeRequest.signal.aborted) loading.value = false;
+        if (activeRequest === controller) loading.value = false;
     }
 }
 
