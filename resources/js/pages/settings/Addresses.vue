@@ -255,7 +255,10 @@ onMounted(loadAddresses);
                 {{ selectedId ? 'ویرایش نشانی' : 'نشانی جدید' }}
             </h2>
 
-            <form class="grid gap-4 md:grid-cols-2" @submit.prevent="saveAddress">
+            <form
+                class="grid gap-4 md:grid-cols-2"
+                @submit.prevent="saveAddress"
+            >
                 <label class="grid gap-1.5 text-sm">
                     عنوان نشانی
                     <input
@@ -265,7 +268,10 @@ onMounted(loadAddresses);
                         class="h-10 rounded-md border bg-background px-3"
                         placeholder="خانه، محل کار..."
                     />
-                    <span v-if="fieldErrors.label" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.label"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.label[0] }}
                     </span>
                 </label>
@@ -295,7 +301,10 @@ onMounted(loadAddresses);
                         dir="ltr"
                         class="h-10 rounded-md border bg-background px-3"
                     />
-                    <span v-if="fieldErrors.phone" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.phone"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.phone[0] }}
                     </span>
                 </label>
@@ -341,7 +350,10 @@ onMounted(loadAddresses);
                         maxlength="120"
                         class="h-10 rounded-md border bg-background px-3"
                     />
-                    <span v-if="fieldErrors.city" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.city"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.city[0] }}
                     </span>
                 </label>
@@ -381,7 +393,11 @@ onMounted(loadAddresses);
                 </label>
 
                 <label class="flex items-center gap-2 self-end text-sm">
-                    <input v-model="form.is_default" type="checkbox" class="size-4" />
+                    <input
+                        v-model="form.is_default"
+                        type="checkbox"
+                        class="size-4"
+                    />
                     نشانی پیش‌فرض من باشد
                 </label>
 
@@ -404,7 +420,10 @@ onMounted(loadAddresses);
             </form>
         </section>
 
-        <p v-if="loading" class="py-6 text-center text-sm text-muted-foreground">
+        <p
+            v-if="loading"
+            class="py-6 text-center text-sm text-muted-foreground"
+        >
             در حال دریافت نشانی‌ها...
         </p>
 
