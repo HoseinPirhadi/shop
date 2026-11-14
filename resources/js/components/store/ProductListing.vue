@@ -142,10 +142,7 @@ onBeforeUnmount(() => {
         >
             <div>
                 <h2 class="text-xl font-semibold">{{ heading }}</h2>
-                <p
-                    v-if="pagination"
-                    class="mt-1 text-sm text-muted-foreground"
-                >
+                <p v-if="pagination" class="mt-1 text-sm text-muted-foreground">
                     {{ pagination.total.toLocaleString('fa-IR') }} محصول
                 </p>
             </div>
@@ -156,10 +153,7 @@ onBeforeUnmount(() => {
                     role="search"
                     @submit.prevent="submitSearch"
                 >
-                    <label
-                        class="sr-only"
-                        for="store-product-search"
-                    >
+                    <label class="sr-only" for="store-product-search">
                         جستجوی محصولات
                     </label>
                     <input
@@ -178,17 +172,16 @@ onBeforeUnmount(() => {
                     </button>
                 </form>
 
-                <label
-                    class="sr-only"
-                    for="store-product-sort"
-                >
+                <label class="sr-only" for="store-product-sort">
                     مرتب‌سازی محصولات
                 </label>
                 <select
                     id="store-product-sort"
                     :value="sort"
                     class="h-10 rounded-md border bg-background px-3 text-sm"
-                    @change="changeSort(($event.target as HTMLSelectElement).value)"
+                    @change="
+                        changeSort(($event.target as HTMLSelectElement).value)
+                    "
                 >
                     <option value="featured">پیش‌فرض</option>
                     <option value="newest">جدیدترین</option>
@@ -274,8 +267,8 @@ onBeforeUnmount(() => {
                 قبلی
             </button>
             <span class="text-sm text-muted-foreground">
-                صفحه {{ pagination.current_page.toLocaleString('fa-IR') }}
-                از {{ pagination.last_page.toLocaleString('fa-IR') }}
+                صفحه {{ pagination.current_page.toLocaleString('fa-IR') }} از
+                {{ pagination.last_page.toLocaleString('fa-IR') }}
             </span>
             <button
                 type="button"
