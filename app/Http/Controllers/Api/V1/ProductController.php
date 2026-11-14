@@ -10,6 +10,7 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -123,8 +124,19 @@ class ProductController extends Controller
 
     public function destroy(Product $product): JsonResponse
     {
-        Storage::disk('public')->delete($product->images()->pluck('path')->all());
-        $product->delete();
+        $imagePaths = DB::transaction(function () use ($product): array {
+            $lockedProduct = Product::query()
+                ->whereKey($product->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $paths = $lockedProduct->images()->pluck('path')->all();
+            $lockedProduct->delete();
+
+            return $paths;
+        });
+
+        Storage::disk('public')->delete($imagePaths);
 
         return response()->json(status: 204);
     }
