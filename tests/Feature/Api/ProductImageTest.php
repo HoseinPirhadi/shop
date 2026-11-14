@@ -11,11 +11,12 @@ test('administrator can upload images, choose a primary image, and delete images
 
     $admin = User::factory()->create(['is_admin' => true]);
     $product = Product::factory()->create();
+    $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC') ?: '';
 
     $firstUpload = $this->actingAs($admin)->post(
         '/api/v1/admin/products/'.$product->id.'/images',
         [
-            'image' => UploadedFile::fake()->image('front.jpg'),
+            'image' => UploadedFile::fake()->createWithContent('front.png', $png),
             'alt' => 'نمای جلو',
         ],
         ['Accept' => 'application/json'],
@@ -32,7 +33,7 @@ test('administrator can upload images, choose a primary image, and delete images
     $secondUpload = $this->actingAs($admin)->post(
         '/api/v1/admin/products/'.$product->id.'/images',
         [
-            'image' => UploadedFile::fake()->image('back.jpg'),
+            'image' => UploadedFile::fake()->createWithContent('back.png', $png),
             'alt' => 'نمای پشت',
         ],
         ['Accept' => 'application/json'],
