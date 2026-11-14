@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StorefrontController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,7 +9,7 @@ Route::get('/categories/{slug}', [StorefrontController::class, 'category'])->nam
 Route::get('/products/{slug}', [StorefrontController::class, 'product'])->name('store.products.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     Route::middleware('can:access-admin')
         ->prefix('admin')
