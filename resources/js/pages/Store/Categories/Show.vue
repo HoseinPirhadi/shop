@@ -104,7 +104,10 @@ onMounted(async () => {
             >
                 <h2 class="font-semibold">{{ product.name }}</h2>
                 <p class="mt-2 flex-1 text-sm leading-6 text-muted-foreground">
-                    {{ product.description || 'توضیحاتی برای این محصول ثبت نشده است.' }}
+                    {{
+                        product.description ||
+                        'توضیحاتی برای این محصول ثبت نشده است.'
+                    }}
                 </p>
                 <Link
                     :href="'/products/' + product.slug"
