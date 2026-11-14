@@ -70,8 +70,7 @@ async function loadSettings() {
         currencyConfigured.value = result.data.currency_configured;
     } catch (error) {
         errorMessage.value =
-            (error as ApiError).message ??
-            'دریافت تنظیمات فروشگاه انجام نشد.';
+            (error as ApiError).message ?? 'دریافت تنظیمات فروشگاه انجام نشد.';
     } finally {
         loading.value = false;
     }
@@ -110,7 +109,7 @@ async function saveSettings() {
         saving.value = false;
     }
 }
- 
+
 onMounted(loadSettings);
 </script>
 
@@ -199,9 +198,9 @@ onMounted(loadSettings);
                         هنوز واحد پول فروشگاه تعیین نشده است.
                     </p>
                     <p class="mt-1 text-muted-foreground">
-                        تا زمان تعیین ارز، قیمت‌گذاری و خرید فعال نمی‌شوند.
-                        ثبت کد ارز به‌تنهایی به معنی فعال‌شدن پرداخت یا
-                        فرایند سفارش نیست.
+                        تا زمان تعیین ارز، قیمت‌گذاری و خرید فعال نمی‌شوند. ثبت
+                        کد ارز به‌تنهایی به معنی فعال‌شدن پرداخت یا فرایند سفارش
+                        نیست.
                     </p>
                 </div>
 
