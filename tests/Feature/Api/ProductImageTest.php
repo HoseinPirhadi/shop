@@ -10,7 +10,7 @@ test('administrator can upload images, choose a primary image, and delete images
     Storage::fake('public');
 
     $admin = User::factory()->create(['is_admin' => true]);
-    $product = Product::factory()->create();
+    $product = Product::factory()->create(['is_active' => true]);
     $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC') ?: '';
 
     $firstUpload = $this->actingAs($admin)->post(
@@ -54,6 +54,10 @@ test('administrator can upload images, choose a primary image, and delete images
         ->assertJsonPath('data.is_primary', true);
 
     expect($firstImage->fresh()->is_primary)->toBeFalse();
+
+    $this->getJson('/api/v1/products')
+        ->assertOk()
+        ->assertJsonPath('data.0.images.0.id', $secondImage->id);
 
     $this->actingAs($admin)
         ->deleteJson('/api/v1/admin/products/'.$product->id.'/images/'.$secondImage->id)
@@ -128,4 +132,50 @@ test('deleting a product also removes its stored image files', function () {
         ->assertNoContent();
 
     Storage::disk('public')->assertMissing($path);
+});
+
+
+test('primary images cannot be unset and images cannot be managed through another product', function () {
+    $admin = User::factory()->create(['is_admin' => true]);
+    $product = Product::factory()->create();
+    $anotherProduct = Product::factory()->create();
+    $image = ProductImage::query()->create([
+        'product_id' => $product->id,
+        'path' => 'products/'.$product->id.'/front.jpg',
+        'is_primary' => true,
+    ]);
+
+    $this->actingAs($admin)
+        ->patchJson('/api/v1/admin/products/'.$product->id.'/images/'.$image->id, [
+            'is_primary' => false,
+        ])
+        ->assertUnprocessable();
+
+    $this->actingAs($admin)
+        ->patchJson('/api/v1/admin/products/'.$anotherProduct->id.'/images/'.$image->id, [
+            'alt' => 'تصویر نامعتبر',
+        ])
+        ->assertNotFound();
+
+    $this->actingAs($admin)
+        ->deleteJson('/api/v1/admin/products/'.$anotherProduct->id.'/images/'.$image->id)
+        ->assertNotFound();
+
+    expect($image->fresh()->is_primary)->toBeTrue();
+});
+
+test('image uploads reject files outside the allowed image formats', function () {
+    Storage::fake('public');
+
+    $admin = User::factory()->create(['is_admin' => true]);
+    $product = Product::factory()->create();
+
+    $this->actingAs($admin)
+        ->post('/api/v1/admin/products/'.$product->id.'/images', [
+            'image' => UploadedFile::fake()->create('notes.txt', 10, 'text/plain'),
+        ], ['Accept' => 'application/json'])
+        ->assertUnprocessable();
+
+    expect(ProductImage::query()->where('product_id', $product->id)->count())->toBe(0);
+    expect(Storage::disk('public')->allFiles('products/'.$product->id))->toBe([]);
 });
