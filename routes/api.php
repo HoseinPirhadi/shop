@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\V1\CategoryController;
-use App\Http\Controllers\Api\V1\ProductController;
-use App\Http\Controllers\Api\V1\ProductImageController;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\\Http\\Controllers\\Api\\V1\\CategoryController;
+use App\\Http\\Controllers\\Api\\V1\\ProductController;
+use App\\Http\\Controllers\\Api\\V1\\ProductImageController;
+use App\\Http\\Controllers\\Api\\V1\\ProductVariantController;
+use App\\Models\\User;
+use Illuminate\\Http\\Request;
+use Illuminate\\Support\\Facades\\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('/health', function () {
@@ -40,6 +41,13 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::post('/products/{product}/images', [ProductImageController::class, 'store'])->name('products.images.store');
             Route::patch('/products/{product}/images/{image}', [ProductImageController::class, 'update'])->name('products.images.update');
             Route::delete('/products/{product}/images/{image}', [ProductImageController::class, 'destroy'])->name('products.images.destroy');
+
+            Route::get('/products/{product}/variants', [ProductVariantController::class, 'index'])->name('products.variants.index');
+            Route::post('/products/{product}/variants', [ProductVariantController::class, 'store'])->name('products.variants.store');
+            Route::patch('/products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('products.variants.update');
+            Route::delete('/products/{product}/variants/{variant}', [ProductVariantController::class, 'destroy'])->name('products.variants.destroy');
+            Route::post('/products/{product}/variants/{variant}/inventory-adjustments', [ProductVariantController::class, 'adjustInventory'])->name('products.variants.inventory-adjustments.store');
+            Route::get('/products/{product}/variants/{variant}/inventory-movements', [ProductVariantController::class, 'movements'])->name('products.variants.inventory-movements.index');
         });
 
     Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
