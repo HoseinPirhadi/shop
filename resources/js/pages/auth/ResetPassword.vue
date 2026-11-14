@@ -2,7 +2,7 @@
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
-import گذرواژهInput from '@/components/گذرواژهInput.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,7 +22,7 @@ const props = defineProps<{
     passwordRules: string;
 }>();
 
-const inputنشانی ایمیل = ref(props.email);
+const inputEmail = ref(props.email);
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const inputنشانی ایمیل = ref(props.email);
                     type="email"
                     name="email"
                     autocomplete="email"
-                    v-model="inputنشانی ایمیل"
+                    v-model="inputEmail"
                     class="mt-1 block w-full"
                     readonly
                 />
@@ -51,7 +51,7 @@ const inputنشانی ایمیل = ref(props.email);
 
             <div class="grid gap-2">
                 <Label for="password">گذرواژه</Label>
-                <گذرواژهInput
+                <PasswordInput
                     id="password"
                     name="password"
                     autocomplete="new-password"
@@ -65,7 +65,7 @@ const inputنشانی ایمیل = ref(props.email);
 
             <div class="grid gap-2">
                 <Label for="password_confirmation"> تکرار گذرواژه </Label>
-                <گذرواژهInput
+                <PasswordInput
                     id="password_confirmation"
                     name="password_confirmation"
                     autocomplete="new-password"
