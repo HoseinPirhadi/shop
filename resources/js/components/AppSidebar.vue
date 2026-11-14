@@ -7,6 +7,7 @@ import {
     FolderTree,
     LayoutGrid,
     Package,
+    Settings,
 } from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -46,6 +47,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Products',
                 href: '/admin/products',
                 icon: Package,
+            },
+            {
+                title: 'Store settings',
+                href: '/admin/settings',
+                icon: Settings,
             },
         );
     }
