@@ -19,7 +19,7 @@ class UpdateProductImageRequest extends FormRequest
         return [
             'alt' => ['sometimes', 'nullable', 'string', 'max:160'],
             'sort_order' => ['sometimes', 'integer', 'min:0', 'max:4294967295'],
-            'is_primary' => ['sometimes', 'boolean'],
+            'is_primary' => ['sometimes', 'accepted'],
         ];
     }
 }
