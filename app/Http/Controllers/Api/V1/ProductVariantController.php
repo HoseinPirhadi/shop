@@ -76,7 +76,7 @@ class ProductVariantController extends Controller
             return $lockedVariant->refresh();
         });
 
-        return new ProductVariantResource($updated);
+        return new AdminProductVariantResource($updated);
     }
 
     public function destroy(Product $product, ProductVariant $variant): JsonResponse
