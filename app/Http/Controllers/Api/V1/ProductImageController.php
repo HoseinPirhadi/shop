@@ -9,21 +9,40 @@ use App\Http\Resources\ProductImageResource;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class ProductImageController extends Controller
 {
     public function store(StoreProductImageRequest $request, Product $product): JsonResponse
     {
         $data = $request->validated();
-        $path = $request->file('image')->store('products/'.$product->id, 'public');
+        $file = $request->file('image');
 
-        $image = $product->images()->create([
-            'path' => $path,
-            'alt' => $data['alt'] ?? null,
-            'sort_order' => $data['sort_order'] ?? 0,
-            'is_primary' => ! $product->images()->exists(),
-        ]);
+        if (! $file instanceof UploadedFile) {
+            abort(422, 'تصویر معتبر ارسال نشده است.');
+        }
+
+        $path = $file->store('products/'.$product->id, 'public');
+
+        if ($path === false) {
+            abort(500, 'ذخیره تصویر انجام نشد.');
+        }
+
+        try {
+            $image = $product->images()->create([
+                'path' => $path,
+                'alt' => $data['alt'] ?? null,
+                'sort_order' => $data['sort_order'] ?? 0,
+                'is_primary' => ! $product->images()->exists(),
+            ]);
+        } catch (Throwable $exception) {
+            Storage::disk('public')->delete($path);
+
+            throw $exception;
+        }
 
         return (new ProductImageResource($image))
             ->response()
@@ -39,13 +58,15 @@ class ProductImageController extends Controller
 
         $data = $request->validated();
 
-        if (($data['is_primary'] ?? false) === true) {
-            $product->images()
-                ->where('id', '<>', $image->id)
-                ->update(['is_primary' => false]);
-        }
+        DB::transaction(function () use ($data, $product, $image): void {
+            if (($data['is_primary'] ?? false) === true) {
+                $product->images()
+                    ->where('id', '<>', $image->id)
+                    ->update(['is_primary' => false]);
+            }
 
-        $image->update($data);
+            $image->update($data);
+        });
 
         return new ProductImageResource($image->fresh());
     }
@@ -54,20 +75,25 @@ class ProductImageController extends Controller
     {
         abort_unless($image->product_id === $product->id, 404);
 
+        $path = $image->path;
         $wasPrimary = $image->is_primary;
-        Storage::disk('public')->delete($image->path);
-        $image->delete();
 
-        if ($wasPrimary) {
-            $product->images()
-                ->orderBy('sort_order')
-                ->orderBy('id')
-                ->first()
-                ?->update(['is_primary' => true]);
-        }
+        DB::transaction(function () use ($image, $product, $wasPrimary): void {
+            $image->delete();
+
+            if ($wasPrimary) {
+                $product->images()
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->first()
+                    ?->update(['is_primary' => true]);
+            }
+        });
+
+        Storage::disk('public')->delete($path);
 
         return ProductImageResource::collection(
-            $product->images()->orderBy('sort_order')->orderBy('id')->get()
+            $product->images()->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id')->get()
         )->response();
     }
 }
