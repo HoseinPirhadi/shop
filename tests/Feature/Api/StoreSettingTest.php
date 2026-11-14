@@ -24,6 +24,12 @@ test('administrators can update store name and ISO currency code format', functi
         ->assertJsonPath('data.currency_configured', true);
 
     expect(StoreSetting::current()->currency_code)->toBe('GBP');
+
+    $this->getJson('/api/v1/store-settings')
+        ->assertOk()
+        ->assertJsonPath('data.store_name', 'فروشگاه نمونه')
+        ->assertJsonPath('data.currency_code', 'GBP')
+        ->assertJsonPath('data.currency_configured', true);
 });
 
 test('invalid currency code formats are rejected', function () {
