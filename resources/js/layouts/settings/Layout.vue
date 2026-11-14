@@ -14,6 +14,7 @@ const sidebarNavItems: NavItem[] = [
     { title: 'امنیت حساب', href: editSecurity() },
     { title: 'نمایش و پوسته', href: editAppearance() },
     { title: 'نشانی‌ها', href: '/settings/addresses' },
+    { title: 'نشانی‌ها', href: '/settings/addresses' },
 ];
 const { isCurrentOrParentUrl } = useCurrentUrl();
 </script>
