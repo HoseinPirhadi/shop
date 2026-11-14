@@ -23,7 +23,7 @@ class StoreProductVariantRequest extends FormRequest
             'options' => ['nullable', 'array', 'max:20'],
             'options.*' => ['required', 'string', 'max:100'],
             'track_inventory' => ['sometimes', 'boolean'],
-            'stock_quantity' => ['sometimes', 'integer', 'min:0', 'max:4294967295'],
+            'stock_quantity' => ['prohibited'],
             'is_active' => ['sometimes', 'boolean'],
             'is_default' => ['sometimes', 'boolean'],
         ];
