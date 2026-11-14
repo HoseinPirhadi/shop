@@ -13,6 +13,7 @@ const sidebarNavItems: NavItem[] = [
     { title: 'اطلاعات حساب', href: editProfile() },
     { title: 'امنیت حساب', href: editSecurity() },
     { title: 'نمایش و پوسته', href: editAppearance() },
+    { title: 'نشانی‌ها', href: '/settings/addresses' },
 ];
 const { isCurrentOrParentUrl } = useCurrentUrl();
 </script>
