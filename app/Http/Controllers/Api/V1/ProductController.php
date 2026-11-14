@@ -10,29 +10,49 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection
     {
+        $filters = $request->validate([
+            'category' => ['sometimes', 'string', 'max:180'],
+            'q' => ['sometimes', 'string', 'max:120'],
+            'sort' => ['sometimes', 'string', Rule::in(['featured', 'newest', 'name_asc', 'name_desc'])],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:48'],
+        ]);
+
         $query = Product::query()
             ->with(['categories' => fn ($query) => $query->where('is_active', true)])
             ->where('is_active', true);
 
-        $categorySlug = $request->query('category');
-
-        if (is_string($categorySlug) && $categorySlug !== '') {
+        if (! empty($filters['category'])) {
             $query->whereHas('categories', fn ($categories) => $categories
-                ->where('slug', $categorySlug)
+                ->where('slug', $filters['category'])
                 ->where('is_active', true));
         }
 
-        $products = $query
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->paginate(30);
+        if (! empty($filters['q'])) {
+            $search = trim($filters['q']);
 
-        return ProductResource::collection($products);
+            if ($search !== '') {
+                $query->where(fn ($products) => $products
+                    ->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('description', 'like', '%'.$search.'%'));
+            }
+        }
+
+        match ($filters['sort'] ?? 'featured') {
+            'newest' => $query->orderByDesc('created_at')->orderByDesc('id'),
+            'name_asc' => $query->orderBy('name')->orderBy('id'),
+            'name_desc' => $query->orderByDesc('name')->orderByDesc('id'),
+            default => $query->orderBy('sort_order')->orderBy('name')->orderBy('id'),
+        };
+
+        return ProductResource::collection(
+            $query->paginate((int) ($filters['per_page'] ?? 12))->withQueryString()
+        );
     }
 
     public function show(string $slug): ProductResource|JsonResponse
