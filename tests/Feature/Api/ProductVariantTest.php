@@ -2,7 +2,6 @@
 
 use App\Models\InventoryMovement;
 use App\Models\Product;
-use App\Models\ProductVariant;
 use App\Models\User;
 
 test('new products receive a default inventory-tracked variant', function () {
