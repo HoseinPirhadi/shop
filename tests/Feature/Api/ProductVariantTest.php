@@ -5,10 +5,8 @@ use App\\Models\\Product;
 use App\\Models\\ProductVariant;
 use App\\Models\\User;
 
-test('existing products receive a default inventory-tracked variant', function () {
+test('new products receive a default inventory-tracked variant', function () {
     $product = Product::factory()->create();
-
-    $this->artisan('migrate');
 
     $this->assertDatabaseHas('product_variants', [
         'product_id' => $product->id,
@@ -22,37 +20,38 @@ test('existing products receive a default inventory-tracked variant', function (
 test('administrators can create variants and choose one default variant', function () {
     $admin = User::factory()->create(['is_admin' => true]);
     $product = Product::factory()->create();
-    $default = ProductVariant::query()->create([
-        'product_id' => $product->id,
-        'name' => 'پیش‌فرض',
-        'is_default' => true,
-    ]);
+    $default = $product->variants()->firstOrFail();
 
     $response = $this->actingAs($admin)->postJson('/api/v1/admin/products/'.$product->id.'/variants', [
         'name' => 'مشکی / سایز بزرگ',
         'sku' => 'LAMP-BLK-L',
         'options' => ['رنگ' => 'مشکی', 'سایز' => 'بزرگ'],
-        'stock_quantity' => 8,
         'is_default' => true,
     ]);
 
     $response->assertCreated()
         ->assertJsonPath('data.name', 'مشکی / سایز بزرگ')
-        ->assertJsonPath('data.stock_quantity', 8)
+        ->assertJsonPath('data.stock_quantity', 0)
         ->assertJsonPath('data.is_default', true);
 
     expect($default->fresh()->is_default)->toBeFalse();
+
+    $variantId = $response->json('data.id');
+
+    $this->actingAs($admin)
+        ->postJson('/api/v1/admin/products/'.$product->id.'/variants/'.$variantId.'/inventory-adjustments', [
+            'quantity_delta' => 8,
+            'reason' => 'موجودی اولیه',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.stock_quantity', 8);
 });
 
 test('inventory adjustments are audited and cannot make stock negative', function () {
     $admin = User::factory()->create(['is_admin' => true]);
     $product = Product::factory()->create();
-    $variant = ProductVariant::query()->create([
-        'product_id' => $product->id,
-        'name' => 'آبی',
-        'stock_quantity' => 4,
-        'track_inventory' => true,
-    ]);
+    $variant = $product->variants()->firstOrFail();
+    $variant->update(['name' => 'آبی', 'stock_quantity' => 4]);
 
     $this->actingAs($admin)
         ->postJson('/api/v1/admin/products/'.$product->id.'/variants/'.$variant->id.'/inventory-adjustments', [
@@ -85,8 +84,8 @@ test('inventory adjustments are audited and cannot make stock negative', functio
 
 test('variant inventory is not exposed to public product responses', function () {
     $product = Product::factory()->create(['is_active' => true]);
-    ProductVariant::query()->create([
-        'product_id' => $product->id,
+    $variant = $product->variants()->firstOrFail();
+    $variant->update([
         'name' => 'سفید',
         'sku' => 'SECRET-SKU',
         'stock_quantity' => 17,
@@ -103,7 +102,7 @@ test('variant inventory is not exposed to public product responses', function ()
 test('customers cannot manage variants or inventory', function () {
     $user = User::factory()->create();
     $product = Product::factory()->create();
-    $variant = ProductVariant::query()->create(['product_id' => $product->id, 'name' => 'پیش‌فرض']);
+    $variant = $product->variants()->firstOrFail();
 
     $this->actingAs($user)
         ->getJson('/api/v1/admin/products/'.$product->id.'/variants')
@@ -121,13 +120,13 @@ test('a product must keep at least one variant and nested ownership is enforced'
     $admin = User::factory()->create(['is_admin' => true]);
     $product = Product::factory()->create();
     $otherProduct = Product::factory()->create();
-    $variant = ProductVariant::query()->create(['product_id' => $otherProduct->id, 'name' => 'other']);
+    $otherVariant = $otherProduct->variants()->firstOrFail();
 
     $this->actingAs($admin)
-        ->deleteJson('/api/v1/admin/products/'.$product->id.'/variants/'.$variant->id)
+        ->deleteJson('/api/v1/admin/products/'.$product->id.'/variants/'.$otherVariant->id)
         ->assertNotFound();
 
-    $onlyVariant = ProductVariant::query()->create(['product_id' => $product->id, 'name' => 'only']);
+    $onlyVariant = $product->variants()->firstOrFail();
 
     $this->actingAs($admin)
         ->deleteJson('/api/v1/admin/products/'.$product->id.'/variants/'.$onlyVariant->id)
