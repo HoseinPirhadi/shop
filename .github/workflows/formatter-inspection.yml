@@ -1,0 +1,22 @@
+name: Formatter inspection
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run check:fix
+      - name: Print formatted account deletion component
+        run: cat resources/js/components/DeleteUser.vue
