@@ -277,7 +277,7 @@ onMounted(() => loadCategories());
                 </label>
 
                 <label class="grid gap-1.5 text-sm">
-                    شناسه URL (Slug)
+                    شناسه نشانی دسته‌بندی
                     <input
                         v-model="form.slug"
                         required
