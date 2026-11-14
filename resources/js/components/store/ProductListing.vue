@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
 type Category = {
@@ -42,10 +42,13 @@ const sort = ref('featured');
 const page = ref(1);
 const loading = ref(true);
 const errorMessage = ref('');
+let activeRequest: AbortController | null = null;
 
 const hasProducts = computed(() => products.value.length > 0);
 
 async function loadProducts() {
+    activeRequest?.abort();
+    activeRequest = new AbortController();
     loading.value = true;
     errorMessage.value = '';
 
@@ -61,6 +64,7 @@ async function loadProducts() {
     try {
         const response = await fetch('/api/v1/products?' + params.toString(), {
             headers: { Accept: 'application/json' },
+            signal: activeRequest.signal,
         });
 
         if (!response.ok) {
@@ -74,10 +78,13 @@ async function loadProducts() {
 
         products.value = payload.data;
         pagination.value = payload.meta;
-    } catch {
+    } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        products.value = [];
+        pagination.value = null;
         errorMessage.value = 'در حال حاضر دریافت محصولات ممکن نیست.';
     } finally {
-        loading.value = false;
+        if (!activeRequest.signal.aborted) loading.value = false;
     }
 }
 
@@ -117,6 +124,10 @@ watch(
 
 onMounted(() => {
     void loadProducts();
+});
+
+onBeforeUnmount(() => {
+    activeRequest?.abort();
 });
 </script>
 
