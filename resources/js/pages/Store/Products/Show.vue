@@ -119,16 +119,32 @@ onMounted(async () => {
                         class="rounded-lg border px-3 py-2"
                     >
                         <div class="flex items-center justify-between gap-3">
-                            <span class="text-sm font-medium">{{ variant.name }}</span>
+                            <span class="text-sm font-medium">{{
+                                variant.name
+                            }}</span>
                             <span
                                 class="text-xs"
-                                :class="variant.is_available ? 'text-green-600' : 'text-muted-foreground'"
+                                :class="
+                                    variant.is_available
+                                        ? 'text-green-600'
+                                        : 'text-muted-foreground'
+                                "
                             >
                                 {{ variant.is_available ? 'موجود' : 'ناموجود' }}
                             </span>
                         </div>
-                        <p v-if="variant.options && Object.keys(variant.options).length" class="mt-1 text-xs text-muted-foreground">
-                            {{ Object.entries(variant.options).map(([key, value]) => key + ': ' + value).join('، ') }}
+                        <p
+                            v-if="
+                                variant.options &&
+                                Object.keys(variant.options).length
+                            "
+                            class="mt-1 text-xs text-muted-foreground"
+                        >
+                            {{
+                                Object.entries(variant.options)
+                                    .map(([key, value]) => key + ': ' + value)
+                                    .join('، ')
+                            }}
                         </p>
                     </div>
                 </div>

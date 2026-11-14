@@ -100,16 +100,17 @@
 
 تمام مسیرهای زیر به نشست Sanctum و مجوز `access-admin` نیاز دارند:
 
-| متد | مسیر | توضیح |
-| --- | --- | --- |
-| GET | /api/v1/admin/products/{product}/variants | فهرست گونه‌های محصول |
-| POST | /api/v1/admin/products/{product}/variants | ایجاد گونه با موجودی اولیه صفر |
-| PATCH | /api/v1/admin/products/{product}/variants/{variant} | ویرایش نام، SKU، ویژگی‌ها و وضعیت‌ها |
-| DELETE | /api/v1/admin/products/{product}/variants/{variant} | حذف گونه؛ حذف آخرین گونه محصول مجاز نیست |
-| POST | /api/v1/admin/products/{product}/variants/{variant}/inventory-adjustments | تعدیل موجودی و ثبت سابقه |
-| GET | /api/v1/admin/products/{product}/variants/{variant}/inventory-movements | تاریخچه صفحه‌بندی‌شده تغییرات موجودی |
+| متد    | مسیر                                                                      | توضیح                                    |
+| ------ | ------------------------------------------------------------------------- | ---------------------------------------- |
+| GET    | /api/v1/admin/products/{product}/variants                                 | فهرست گونه‌های محصول                      |
+| POST   | /api/v1/admin/products/{product}/variants                                 | ایجاد گونه با موجودی اولیه صفر           |
+| PATCH  | /api/v1/admin/products/{product}/variants/{variant}                       | ویرایش نام، SKU، ویژگی‌ها و وضعیت‌ها       |
+| DELETE | /api/v1/admin/products/{product}/variants/{variant}                       | حذف گونه؛ حذف آخرین گونه محصول مجاز نیست |
+| POST   | /api/v1/admin/products/{product}/variants/{variant}/inventory-adjustments | تعدیل موجودی و ثبت سابقه                 |
+| GET    | /api/v1/admin/products/{product}/variants/{variant}/inventory-movements   | تاریخچه صفحه‌بندی‌شده تغییرات موجودی       |
 
 ورودی ایجاد و ویرایش گونه:
+
 - `name`: نام الزامی، حداکثر ۱۶۰ کاراکتر
 - `sku`: اختیاری، یکتا در کل گونه‌ها، حداکثر ۱۰۰ کاراکتر
 - `options`: شیء اختیاری با حداکثر ۲۰ ویژگی متنی

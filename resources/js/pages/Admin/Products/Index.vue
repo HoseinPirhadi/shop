@@ -408,7 +408,8 @@ onMounted(async () => {
                     v-else
                     class="rounded-md bg-muted/50 p-3 text-sm text-muted-foreground md:col-span-2"
                 >
-                    برای افزودن تصاویر و مدیریت گونه‌ها، ابتدا محصول را ذخیره کنید و سپس آن را ویرایش کنید.
+                    برای افزودن تصاویر و مدیریت گونه‌ها، ابتدا محصول را ذخیره
+                    کنید و سپس آن را ویرایش کنید.
                 </p>
 
                 <div class="flex justify-end gap-2 md:col-span-2">

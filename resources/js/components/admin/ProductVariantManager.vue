@@ -48,9 +48,8 @@ const form = ref({
 });
 const selectedVariant = computed(
     () =>
-        variants.value.find(
-            (variant) => variant.id === selectedId.value,
-        ) ?? null,
+        variants.value.find((variant) => variant.id === selectedId.value) ??
+        null,
 );
 
 function csrfToken(): string {
@@ -96,7 +95,10 @@ function toOptions(): Record<string, string> | null {
                     'هر ویژگی را در یک خط با قالب «نام=مقدار» وارد کنید.',
                 );
             }
-            return [line.slice(0, separator).trim(), line.slice(separator + 1).trim()];
+            return [
+                line.slice(0, separator).trim(),
+                line.slice(separator + 1).trim(),
+            ];
         });
 
     return entries.length ? Object.fromEntries(entries) : null;
@@ -158,8 +160,7 @@ async function loadVariants() {
         await loadMovements();
     } catch (error) {
         errorMessage.value =
-            (error as ApiError).message ??
-            'دریافت گونه‌های محصول انجام نشد.';
+            (error as ApiError).message ?? 'دریافت گونه‌های محصول انجام نشد.';
     } finally {
         loading.value = false;
     }
@@ -168,7 +169,9 @@ async function loadVariants() {
 function selectVariant(variant: Variant) {
     selectedId.value = variant.id;
     loadIntoForm(variant);
-    void loadMovements().catch(() => { errorMessage.value = 'دریافت سوابق موجودی انجام نشد.'; });
+    void loadMovements().catch(() => {
+        errorMessage.value = 'دریافت سوابق موجودی انجام نشد.';
+    });
 }
 
 function newVariant() {
@@ -217,7 +220,8 @@ async function saveVariant() {
 }
 
 async function adjustInventory() {
-    if (!selectedId.value || quantityDelta.value === 0 || !reason.value.trim()) return;
+    if (!selectedId.value || quantityDelta.value === 0 || !reason.value.trim())
+        return;
 
     adjusting.value = true;
     errorMessage.value = '';
@@ -241,7 +245,9 @@ async function adjustInventory() {
         reason.value = '';
         const currentVariantId = selectedId.value;
         await loadVariants();
-        const currentVariant = variants.value.find((item) => item.id === currentVariantId);
+        const currentVariant = variants.value.find(
+            (item) => item.id === currentVariantId,
+        );
         if (currentVariant) {
             selectedId.value = currentVariant.id;
             loadIntoForm(currentVariant);
@@ -249,8 +255,7 @@ async function adjustInventory() {
         await loadMovements();
     } catch (error) {
         errorMessage.value =
-            (error as ApiError).message ??
-            'ثبت تغییر موجودی انجام نشد.';
+            (error as ApiError).message ?? 'ثبت تغییر موجودی انجام نشد.';
     } finally {
         adjusting.value = false;
     }
@@ -282,7 +287,8 @@ onMounted(loadVariants);
         <div>
             <h3 class="font-semibold">گونه‌ها و موجودی</h3>
             <p class="mt-1 text-sm text-muted-foreground">
-                هر گونه می‌تواند SKU و ویژگی‌های مستقل داشته باشد. تغییر موجودی با ثبت سابقه انجام می‌شود.
+                هر گونه می‌تواند SKU و ویژگی‌های مستقل داشته باشد. تغییر موجودی
+                با ثبت سابقه انجام می‌شود.
             </p>
         </div>
 
@@ -294,7 +300,9 @@ onMounted(loadVariants);
             {{ errorMessage }}
         </div>
 
-        <p v-if="loading" class="text-sm text-muted-foreground">در حال دریافت گونه‌ها...</p>
+        <p v-if="loading" class="text-sm text-muted-foreground">
+            در حال دریافت گونه‌ها...
+        </p>
         <template v-else>
             <div class="flex flex-wrap gap-2">
                 <button
@@ -302,11 +310,20 @@ onMounted(loadVariants);
                     :key="variant.id"
                     type="button"
                     class="rounded-md border px-3 py-2 text-sm"
-                    :class="selectedId === variant.id ? 'border-primary bg-primary/5' : ''"
+                    :class="
+                        selectedId === variant.id
+                            ? 'border-primary bg-primary/5'
+                            : ''
+                    "
                     @click="selectVariant(variant)"
                 >
                     {{ variant.name }}
-                    <span v-if="variant.is_default" class="text-xs text-primary"> (پیش‌فرض)</span>
+                    <span
+                        v-if="variant.is_default"
+                        class="text-xs text-primary"
+                    >
+                        (پیش‌فرض)</span
+                    >
                 </button>
                 <button
                     type="button"
@@ -317,7 +334,10 @@ onMounted(loadVariants);
                 </button>
             </div>
 
-            <form class="grid gap-3 md:grid-cols-2" @submit.prevent="saveVariant">
+            <form
+                class="grid gap-3 md:grid-cols-2"
+                @submit.prevent="saveVariant"
+            >
                 <label class="grid gap-1 text-sm">
                     نام گونه
                     <input
@@ -358,19 +378,35 @@ onMounted(loadVariants);
                     />
                 </label>
                 <label class="flex items-center gap-2 text-sm">
-                    <input v-model="form.track_inventory" type="checkbox" class="size-4" />
+                    <input
+                        v-model="form.track_inventory"
+                        type="checkbox"
+                        class="size-4"
+                    />
                     کنترل موجودی فعال باشد
                 </label>
                 <label class="flex items-center gap-2 text-sm">
-                    <input v-model="form.is_active" type="checkbox" class="size-4" />
+                    <input
+                        v-model="form.is_active"
+                        type="checkbox"
+                        class="size-4"
+                    />
                     گونه فعال باشد
                 </label>
                 <label class="flex items-center gap-2 text-sm">
-                    <input v-model="form.is_default" type="checkbox" class="size-4" />
+                    <input
+                        v-model="form.is_default"
+                        type="checkbox"
+                        class="size-4"
+                    />
                     گونه پیش‌فرض
                 </label>
                 <div class="flex justify-end">
-                    <button type="submit" :disabled="saving" class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50">
+                    <button
+                        type="submit"
+                        :disabled="saving"
+                        class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+                    >
                         {{ saving ? 'در حال ذخیره...' : 'ذخیره گونه' }}
                     </button>
                 </div>
@@ -410,7 +446,9 @@ onMounted(loadVariants);
                     </label>
                     <button
                         type="submit"
-                        :disabled="adjusting || quantityDelta === 0 || !reason.trim()"
+                        :disabled="
+                            adjusting || quantityDelta === 0 || !reason.trim()
+                        "
                         class="self-end rounded-md border px-4 py-2 text-sm disabled:opacity-50"
                     >
                         {{ adjusting ? '...' : 'ثبت موجودی' }}
@@ -441,7 +479,10 @@ onMounted(loadVariants);
                             </tr>
                         </thead>
                         <tbody class="divide-y">
-                            <tr v-for="movement in movements" :key="movement.id">
+                            <tr
+                                v-for="movement in movements"
+                                :key="movement.id"
+                            >
                                 <td
                                     class="py-2"
                                     :class="
@@ -450,16 +491,23 @@ onMounted(loadVariants);
                                             : 'text-destructive'
                                     "
                                 >
-                                    {{ movement.quantity_delta > 0 ? '+' : '' }}{{ movement.quantity_delta }}
+                                    {{ movement.quantity_delta > 0 ? '+' : ''
+                                    }}{{ movement.quantity_delta }}
                                 </td>
-                                <td class="py-2">{{ movement.quantity_before }}</td>
-                                <td class="py-2">{{ movement.quantity_after }}</td>
+                                <td class="py-2">
+                                    {{ movement.quantity_before }}
+                                </td>
+                                <td class="py-2">
+                                    {{ movement.quantity_after }}
+                                </td>
                                 <td class="py-2">{{ movement.reason }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <p v-else class="text-xs text-muted-foreground">هنوز تغییری برای این گونه ثبت نشده است.</p>
+                <p v-else class="text-xs text-muted-foreground">
+                    هنوز تغییری برای این گونه ثبت نشده است.
+                </p>
             </div>
         </template>
     </section>
