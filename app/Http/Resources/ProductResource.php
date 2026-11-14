@@ -24,6 +24,7 @@ class ProductResource extends JsonResource
             'sort_order' => $this->sort_order,
             'is_active' => $this->is_active,
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
+            'images' => ProductImageResource::collection($this->whenLoaded('images')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
