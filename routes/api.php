@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CustomerAddressController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Http\Controllers\Api\V1\ProductVariantController;
@@ -53,6 +54,16 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::delete('/products/{product}/variants/{variant}', [ProductVariantController::class, 'destroy'])->name('products.variants.destroy');
             Route::post('/products/{product}/variants/{variant}/inventory-adjustments', [ProductVariantController::class, 'adjustInventory'])->name('products.variants.inventory-adjustments.store');
             Route::get('/products/{product}/variants/{variant}/inventory-movements', [ProductVariantController::class, 'movements'])->name('products.variants.inventory-movements.index');
+        });
+
+    Route::middleware('auth:sanctum')
+        ->prefix('me')
+        ->name('me.')
+        ->group(function () {
+            Route::get('/addresses', [CustomerAddressController::class, 'index'])->name('addresses.index');
+            Route::post('/addresses', [CustomerAddressController::class, 'store'])->name('addresses.store');
+            Route::patch('/addresses/{address}', [CustomerAddressController::class, 'update'])->name('addresses.update');
+            Route::delete('/addresses/{address}', [CustomerAddressController::class, 'destroy'])->name('addresses.destroy');
         });
 
     Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
