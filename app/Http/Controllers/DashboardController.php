@@ -1,14 +1,14 @@
 <?php
 
-namespace App\\Http\\Controllers;
+namespace App\Http\Controllers;
 
-use App\\Models\\Category;
-use App\\Models\\InventoryMovement;
-use App\\Models\\Product;
-use App\\Models\\ProductVariant;
-use Illuminate\\Http\\Request;
-use Inertia\\Inertia;
-use Inertia\\Response;
+use App\Models\Category;
+use App\Models\InventoryMovement;
+use App\Models\Product;
+use App\Models\ProductVariant;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class DashboardController extends Controller
 {
