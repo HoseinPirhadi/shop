@@ -75,7 +75,7 @@ onMounted(async () => {
 
             <h1 class="text-3xl font-bold">{{ product.name }}</h1>
 
-            <p class="mt-5 whitespace-pre-line leading-8 text-muted-foreground">
+            <p class="mt-5 leading-8 whitespace-pre-line text-muted-foreground">
                 {{
                     product.description ||
                     'توضیحاتی برای این محصول ثبت نشده است.'
