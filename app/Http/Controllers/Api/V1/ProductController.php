@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\\Http\\Controllers\\Api\\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
+use App\\Http\\Controllers\\Controller;
+use App\\Http\\Requests\\StoreProductRequest;
+use App\\Http\\Requests\\UpdateProductRequest;
+use App\\Http\\Resources\\ProductResource;
+use App\\Models\\Product;
+use Illuminate\\Http\\JsonResponse;
+use Illuminate\\Http\\Request;
+use Illuminate\\Http\\Resources\\Json\\AnonymousResourceCollection;
+use Illuminate\\Support\\Facades\\DB;
+use Illuminate\\Support\\Facades\\Storage;
+use Illuminate\\Validation\\Rule;
 
 class ProductController extends Controller
 {
@@ -29,6 +29,7 @@ class ProductController extends Controller
             ->with([
                 'categories' => fn ($query) => $query->where('is_active', true),
                 'images' => fn ($query) => $query->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id'),
+                'variants' => fn ($query) => $query->where('is_active', true)->orderByDesc('is_default')->orderBy('id'),
             ])
             ->where('is_active', true);
 
@@ -66,6 +67,7 @@ class ProductController extends Controller
             ->with([
                 'categories' => fn ($query) => $query->where('is_active', true),
                 'images' => fn ($query) => $query->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id'),
+                'variants' => fn ($query) => $query->where('is_active', true)->orderByDesc('is_default')->orderBy('id'),
             ])
             ->where('slug', $slug)
             ->where('is_active', true)
@@ -86,6 +88,7 @@ class ProductController extends Controller
             ->with([
                 'categories',
                 'images' => fn ($query) => $query->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id'),
+                'variants' => fn ($query) => $query->orderByDesc('is_default')->orderBy('id'),
             ])
             ->orderBy('sort_order')
             ->orderBy('name')
@@ -103,7 +106,7 @@ class ProductController extends Controller
         $product = Product::query()->create($data);
         $product->categories()->sync($categoryIds);
 
-        return (new ProductResource($product->load(['categories', 'images'])))
+        return (new ProductResource($product->load(['categories', 'images', 'variants'])))
             ->response()
             ->setStatusCode(201);
     }
@@ -119,7 +122,7 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        return new ProductResource($product->load(['categories', 'images']));
+        return new ProductResource($product->load(['categories', 'images', 'variants']));
     }
 
     public function destroy(Product $product): JsonResponse
