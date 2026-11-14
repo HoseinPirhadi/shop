@@ -16,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->group(function () {
             Route::inertia('categories', 'Admin/Categories/Index')->name('categories.index');
             Route::inertia('products', 'Admin/Products/Index')->name('products.index');
+            Route::inertia('settings', 'Admin/Settings/Store')->name('settings.store');
         });
 });
 
