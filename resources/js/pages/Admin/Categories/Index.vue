@@ -58,11 +58,16 @@ const emptyForm = (): CategoryForm => ({
 
 const form = ref<CategoryForm>(emptyForm());
 
-async function apiRequest<T>(url: string, options: RequestInit = {}): Promise<T> {
+async function apiRequest<T>(
+    url: string,
+    options: RequestInit = {},
+): Promise<T> {
     const cookie = document.cookie
         .split('; ')
         .find((item) => item.startsWith('XSRF-TOKEN='));
-    const token = cookie ? decodeURIComponent(cookie.slice('XSRF-TOKEN='.length)) : '';
+    const token = cookie
+        ? decodeURIComponent(cookie.slice('XSRF-TOKEN='.length))
+        : '';
 
     const response = await fetch(url, {
         credentials: 'same-origin',
@@ -97,7 +102,8 @@ async function loadCategories(url = '/api/v1/admin/categories') {
         categories.value = result.data;
         pagination.value = result.links;
     } catch {
-        errorMessage.value = 'دریافت فهرست دسته‌بندی‌ها ناموفق بود. صفحه را دوباره بارگذاری کنید.';
+        errorMessage.value =
+            'دریافت فهرست دسته‌بندی‌ها ناموفق بود. صفحه را دوباره بارگذاری کنید.';
     } finally {
         loading.value = false;
     }
@@ -154,7 +160,7 @@ async function saveCategory() {
         fieldErrors.value = apiError.errors ?? {};
         errorMessage.value = apiError.errors
             ? ''
-            : apiError.message ?? 'ذخیره دسته‌بندی انجام نشد.';
+            : (apiError.message ?? 'ذخیره دسته‌بندی انجام نشد.');
     } finally {
         saving.value = false;
     }
@@ -233,7 +239,10 @@ onMounted(() => loadCategories());
             {{ errorMessage }}
         </div>
 
-        <section v-if="formVisible" class="rounded-xl border bg-card p-4 md:p-6">
+        <section
+            v-if="formVisible"
+            class="rounded-xl border bg-card p-4 md:p-6"
+        >
             <div class="mb-5 flex items-center justify-between">
                 <h2 class="font-semibold">
                     {{ editingId ? 'ویرایش دسته‌بندی' : 'ایجاد دسته‌بندی' }}
@@ -247,7 +256,10 @@ onMounted(() => loadCategories());
                 </button>
             </div>
 
-            <form class="grid gap-4 md:grid-cols-2" @submit.prevent="saveCategory">
+            <form
+                class="grid gap-4 md:grid-cols-2"
+                @submit.prevent="saveCategory"
+            >
                 <label class="grid gap-1.5 text-sm">
                     نام دسته‌بندی
                     <input
@@ -256,7 +268,10 @@ onMounted(() => loadCategories());
                         maxlength="160"
                         class="h-10 rounded-md border bg-background px-3"
                     />
-                    <span v-if="fieldErrors.name" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.name"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.name[0] }}
                     </span>
                 </label>
@@ -271,24 +286,35 @@ onMounted(() => loadCategories());
                         class="h-10 rounded-md border bg-background px-3"
                         dir="ltr"
                     />
-                    <span v-if="fieldErrors.slug" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.slug"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.slug[0] }}
                     </span>
                 </label>
 
                 <label class="grid gap-1.5 text-sm">
                     دسته‌بندی والد
-                    <select v-model="form.parent_id" class="h-10 rounded-md border bg-background px-3">
+                    <select
+                        v-model="form.parent_id"
+                        class="h-10 rounded-md border bg-background px-3"
+                    >
                         <option value="">بدون والد (دسته اصلی)</option>
                         <option
-                            v-for="category in categories.filter((item) => item.id !== editingId)"
+                            v-for="category in categories.filter(
+                                (item) => item.id !== editingId,
+                            )"
                             :key="category.id"
                             :value="category.id.toString()"
                         >
                             {{ category.name }}
                         </option>
                     </select>
-                    <span v-if="fieldErrors.parent_id" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.parent_id"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.parent_id[0] }}
                     </span>
                 </label>
@@ -301,7 +327,10 @@ onMounted(() => loadCategories());
                         min="0"
                         class="h-10 rounded-md border bg-background px-3"
                     />
-                    <span v-if="fieldErrors.sort_order" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.sort_order"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.sort_order[0] }}
                     </span>
                 </label>
@@ -314,18 +343,29 @@ onMounted(() => loadCategories());
                         maxlength="10000"
                         class="rounded-md border bg-background px-3 py-2"
                     />
-                    <span v-if="fieldErrors.description" class="text-xs text-destructive">
+                    <span
+                        v-if="fieldErrors.description"
+                        class="text-xs text-destructive"
+                    >
                         {{ fieldErrors.description[0] }}
                     </span>
                 </label>
 
                 <label class="flex items-center gap-2 text-sm">
-                    <input v-model="form.is_active" type="checkbox" class="size-4" />
+                    <input
+                        v-model="form.is_active"
+                        type="checkbox"
+                        class="size-4"
+                    />
                     فعال و قابل نمایش در فروشگاه
                 </label>
 
                 <div class="flex justify-end gap-2 md:col-span-2">
-                    <button type="button" class="rounded-md border px-4 py-2 text-sm" @click="closeForm">
+                    <button
+                        type="button"
+                        class="rounded-md border px-4 py-2 text-sm"
+                        @click="closeForm"
+                    >
                         انصراف
                     </button>
                     <button
@@ -340,7 +380,10 @@ onMounted(() => loadCategories());
         </section>
 
         <section class="overflow-hidden rounded-xl border bg-card">
-            <div v-if="loading" class="p-8 text-center text-sm text-muted-foreground">
+            <div
+                v-if="loading"
+                class="p-8 text-center text-sm text-muted-foreground"
+            >
                 در حال دریافت اطلاعات...
             </div>
 
@@ -366,19 +409,36 @@ onMounted(() => loadCategories());
                     <tbody class="divide-y">
                         <tr v-for="category in categories" :key="category.id">
                             <td class="px-4 py-3 font-medium">
-                                <span :style="{ paddingInlineStart: `${depth(category) * 20}px` }">
+                                <span
+                                    :style="{
+                                        paddingInlineStart: `${depth(category) * 20}px`,
+                                    }"
+                                >
                                     {{ category.name }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-muted-foreground" dir="ltr">
+                            <td
+                                class="px-4 py-3 text-muted-foreground"
+                                dir="ltr"
+                            >
                                 {{ category.slug }}
                             </td>
                             <td class="px-4 py-3">
-                                <span :class="category.is_active ? 'text-green-600' : 'text-muted-foreground'">
-                                    {{ category.is_active ? 'فعال' : 'غیرفعال' }}
+                                <span
+                                    :class="
+                                        category.is_active
+                                            ? 'text-green-600'
+                                            : 'text-muted-foreground'
+                                    "
+                                >
+                                    {{
+                                        category.is_active ? 'فعال' : 'غیرفعال'
+                                    }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3">{{ category.children_count ?? 0 }}</td>
+                            <td class="px-4 py-3">
+                                {{ category.children_count ?? 0 }}
+                            </td>
                             <td class="px-4 py-3">{{ category.sort_order }}</td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-3">
@@ -395,7 +455,11 @@ onMounted(() => loadCategories());
                                         :disabled="deletingId === category.id"
                                         @click="deleteCategory(category)"
                                     >
-                                        {{ deletingId === category.id ? '...' : 'حذف' }}
+                                        {{
+                                            deletingId === category.id
+                                                ? '...'
+                                                : 'حذف'
+                                        }}
                                     </button>
                                 </div>
                             </td>

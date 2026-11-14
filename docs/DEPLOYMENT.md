@@ -9,19 +9,19 @@
 - حداقل نسخه موردنیاز Laravel 13: PHP 8.3
 - نسخه PHP هاست باید در محدوده نسخه‌های پشتیبانی‌شده Laravel 13 باشد.
 - افزونه‌های PHP موردنیاز:
-  - Ctype
-  - cURL
-  - DOM
-  - Fileinfo
-  - Filter
-  - Hash
-  - Mbstring
-  - OpenSSL
-  - PCRE
-  - PDO
-  - Session
-  - Tokenizer
-  - XML
+    - Ctype
+    - cURL
+    - DOM
+    - Fileinfo
+    - Filter
+    - Hash
+    - Mbstring
+    - OpenSSL
+    - PCRE
+    - PDO
+    - Session
+    - Tokenizer
+    - XML
 - برای اتصال به MariaDB/MySQL، افزونه PDO MySQL نیز باید فعال باشد.
 
 ### پایگاه داده
@@ -99,19 +99,19 @@ npm run build
 6. دسترسی نوشتن `storage` و `bootstrap/cache` را بررسی کنید.
 7. migrationها را با دستور زیر اجرا کنید:
 
-   ```bash
-   php artisan migrate --force
-   ```
+    ```bash
+    php artisan migrate --force
+    ```
 
 8. پس از اطمینان از تنظیمات Production، Cacheهای بهینه‌سازی را بسازید:
 
-   ```bash
-   php artisan optimize
-   ```
+    ```bash
+    php artisan optimize
+    ```
 
 9. مسیرهای سلامت را بررسی کنید:
-   - `/up`
-   - `/api/v1/health`
+    - `/up`
+    - `/api/v1/health`
 10. ثبت‌نام، ورود، تأیید ایمیل، بازیابی رمز و نشست API را در محیط HTTPS آزمایش کنید.
 
 از اجرای `migrate:fresh` یا هر دستور حذف داده در Production خودداری کنید.
