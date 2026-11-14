@@ -25,7 +25,7 @@ test('the first-party SPA session can authenticate versioned API requests', func
             'password' => 'password',
         ]);
 
-    $loginResponse->assertNoContent();
+    $loginResponse->assertOk();
 
     $sessionCookie = collect($loginResponse->headers->getCookies())
         ->first(fn (Cookie $cookie): bool => $cookie->getName() === config('session.cookie'));
