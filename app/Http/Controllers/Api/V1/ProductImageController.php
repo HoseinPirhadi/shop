@@ -32,12 +32,19 @@ class ProductImageController extends Controller
         }
 
         try {
-            $image = $product->images()->create([
-                'path' => $path,
-                'alt' => $data['alt'] ?? null,
-                'sort_order' => $data['sort_order'] ?? 0,
-                'is_primary' => ! $product->images()->exists(),
-            ]);
+            $image = DB::transaction(function () use ($data, $path, $product): ProductImage {
+                $lockedProduct = Product::query()
+                    ->whereKey($product->id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                return $lockedProduct->images()->create([
+                    'path' => $path,
+                    'alt' => $data['alt'] ?? null,
+                    'sort_order' => $data['sort_order'] ?? 0,
+                    'is_primary' => ! $lockedProduct->images()->exists(),
+                ]);
+            });
         } catch (Throwable $exception) {
             Storage::disk('public')->delete($path);
 
@@ -59,10 +66,16 @@ class ProductImageController extends Controller
         $data = $request->validated();
 
         DB::transaction(function () use ($data, $product, $image): void {
-            if (($data['is_primary'] ?? false) === true) {
+            Product::query()
+                ->whereKey($product->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (array_key_exists('is_primary', $data)) {
                 $product->images()
                     ->where('id', '<>', $image->id)
                     ->update(['is_primary' => false]);
+                $data['is_primary'] = true;
             }
 
             $image->update($data);
@@ -76,9 +89,14 @@ class ProductImageController extends Controller
         abort_unless($image->product_id === $product->id, 404);
 
         $path = $image->path;
-        $wasPrimary = $image->is_primary;
 
-        DB::transaction(function () use ($image, $product, $wasPrimary): void {
+        DB::transaction(function () use ($image, $product): void {
+            Product::query()
+                ->whereKey($product->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $wasPrimary = $image->is_primary;
             $image->delete();
 
             if ($wasPrimary) {
@@ -93,7 +111,11 @@ class ProductImageController extends Controller
         Storage::disk('public')->delete($path);
 
         return ProductImageResource::collection(
-            $product->images()->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id')->get()
+            $product->images()
+                ->orderByDesc('is_primary')
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->get()
         )->response();
     }
 }
