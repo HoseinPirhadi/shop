@@ -8,9 +8,9 @@ import { send } from '@/routes/verification';
 
 defineOptions({
     layout: {
-        title: 'Email verification',
+        title: 'تأیید نشانی ایمیل',
         description:
-            'Please verify your email address by clicking on the link we just emailed to you.',
+            'برای تأیید نشانی ایمیل، پیوندی را که برایتان فرستاده‌ایم باز کنید.',
     },
 });
 
@@ -20,7 +20,7 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Email verification" />
+    <Head title="تأیید نشانی ایمیل" />
 
     <div
         v-if="status === 'verification-link-sent'"
@@ -37,11 +37,11 @@ defineProps<{
     >
         <Button :disabled="processing" variant="secondary">
             <Spinner v-if="processing" />
-            Resend verification email
+            ارسال دوباره ایمیل تأیید
         </Button>
 
         <TextLink :href="logout()" as="button" class="mx-auto block text-sm">
-            Log out
+            خروج از حساب
         </TextLink>
     </Form>
 </template>
