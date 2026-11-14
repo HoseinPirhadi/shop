@@ -17,7 +17,10 @@ const isAuthenticated = computed(() => page.props.auth.user !== null);
                 </Link>
 
                 <nav class="flex items-center gap-3 text-sm sm:gap-5">
-                    <Link href="/" class="text-muted-foreground hover:text-foreground">
+                    <Link
+                        href="/"
+                        class="text-muted-foreground hover:text-foreground"
+                    >
                         خانه
                     </Link>
                     <Link
@@ -28,7 +31,10 @@ const isAuthenticated = computed(() => page.props.auth.user !== null);
                         حساب کاربری
                     </Link>
                     <template v-else>
-                        <Link href="/login" class="text-muted-foreground hover:text-foreground">
+                        <Link
+                            href="/login"
+                            class="text-muted-foreground hover:text-foreground"
+                        >
                             ورود
                         </Link>
                         <Link
