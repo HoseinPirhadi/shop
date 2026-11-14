@@ -1,0 +1,38 @@
+name: Temporary formatter
+
+on:
+  push:
+    branches: [tmp/format-gallery]
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp/format-gallery
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+      - run: composer install --prefer-dist --no-interaction --no-progress
+      - run: composer run lint
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check:fix
+      - name: Commit formatted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/Http/Resources/ProductImageResource.php docs/CATALOG.md resources/js/components/admin/ProductImageManager.vue resources/js/pages/Admin/Products/Index.vue
+          if ! git diff --cached --quiet; then
+            git commit -m "Format product image gallery changes"
+            git push
+          fi
