@@ -26,7 +26,8 @@ defineProps<{
         v-if="status === 'verification-link-sent'"
         class="mb-4 text-center text-sm font-medium text-green-600"
     >
-        پیوند تازه تأیید به نشانی ایمیلی که هنگام ثبت‌نام وارد کرده‌اید ارسال شد.
+        پیوند تازه تأیید به نشانی ایمیلی که هنگام ثبت‌نام وارد کرده‌اید ارسال
+        شد.
     </div>
 
     <Form

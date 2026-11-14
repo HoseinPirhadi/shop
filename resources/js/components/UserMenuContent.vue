@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
 import { LogOut, Settings } from '@lucide/vue';
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import {
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 import UserInfo from '@/components/UserInfo.vue';
 import { logout } from '@/routes';
 import { edit } from '@/routes/profile';
@@ -10,9 +15,27 @@ defineProps<{ user: User }>();
 const handleLogout = () => router.flushAll();
 </script>
 <template>
-    <DropdownMenuLabel class="p-0 font-normal"><div class="flex items-center gap-2 px-1 py-1.5 text-right text-sm"><UserInfo :user="user" :show-email="true" /></div></DropdownMenuLabel>
+    <DropdownMenuLabel class="p-0 font-normal"
+        ><div class="flex items-center gap-2 px-1 py-1.5 text-right text-sm">
+            <UserInfo :user="user" :show-email="true" /></div
+    ></DropdownMenuLabel>
     <DropdownMenuSeparator />
-    <DropdownMenuGroup><DropdownMenuItem as-child><Link class="block w-full cursor-pointer" :href="edit()" prefetch><Settings class="me-2 h-4 w-4" /> تنظیمات حساب</Link></DropdownMenuItem></DropdownMenuGroup>
+    <DropdownMenuGroup
+        ><DropdownMenuItem as-child
+            ><Link class="block w-full cursor-pointer" :href="edit()" prefetch
+                ><Settings class="me-2 h-4 w-4" /> تنظیمات حساب</Link
+            ></DropdownMenuItem
+        ></DropdownMenuGroup
+    >
     <DropdownMenuSeparator />
-    <DropdownMenuItem as-child><Link class="block w-full cursor-pointer" :href="logout()" @click="handleLogout" as="button" data-test="logout-button"><LogOut class="me-2 h-4 w-4" /> خروج از حساب</Link></DropdownMenuItem>
+    <DropdownMenuItem as-child
+        ><Link
+            class="block w-full cursor-pointer"
+            :href="logout()"
+            @click="handleLogout"
+            as="button"
+            data-test="logout-button"
+            ><LogOut class="me-2 h-4 w-4" /> خروج از حساب</Link
+        ></DropdownMenuItem
+    >
 </template>

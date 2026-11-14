@@ -10,8 +10,7 @@ import { store } from '@/routes/password/confirm';
 defineOptions({
     layout: {
         title: 'تأیید گذرواژه',
-        description:
-            'این بخش امن است؛ برای ادامه، گذرواژه خود را تأیید کنید.',
+        description: 'این بخش امن است؛ برای ادامه، گذرواژه خود را تأیید کنید.',
     },
 });
 </script>

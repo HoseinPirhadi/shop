@@ -25,9 +25,17 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (page.props.auth.user?.is_admin) {
         items.push(
-            { title: 'دسته‌بندی‌ها', href: '/admin/categories', icon: FolderTree },
+            {
+                title: 'دسته‌بندی‌ها',
+                href: '/admin/categories',
+                icon: FolderTree,
+            },
             { title: 'محصولات', href: '/admin/products', icon: Package },
-            { title: 'تنظیمات فروشگاه', href: '/admin/settings', icon: Settings },
+            {
+                title: 'تنظیمات فروشگاه',
+                href: '/admin/settings',
+                icon: Settings,
+            },
         );
     }
 

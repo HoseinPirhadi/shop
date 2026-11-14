@@ -83,9 +83,9 @@
     body,
     html {
         --font-sans:
-            'Vazirmatn', 'IRANSansX', Tahoma, ui-sans-serif, system-ui, sans-serif,
-            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-            'Noto Color Emoji';
+            'Vazirmatn', 'IRANSansX', Tahoma, ui-sans-serif, system-ui,
+            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+            'Segoe UI Symbol', 'Noto Color Emoji';
     }
 }
 
@@ -171,11 +171,22 @@
     }
 }
 
-
 @layer base {
-    html { direction: rtl; font-family: 'Vazirmatn', 'IRANSansX', Tahoma, sans-serif; }
-    body, #app { direction: rtl; }
-    body { text-align: start; }
-    .text-left { text-align: start; }
-    .text-right { text-align: end; }
+    html {
+        direction: rtl;
+        font-family: 'Vazirmatn', 'IRANSansX', Tahoma, sans-serif;
+    }
+    body,
+    #app {
+        direction: rtl;
+    }
+    body {
+        text-align: start;
+    }
+    .text-left {
+        text-align: start;
+    }
+    .text-right {
+        text-align: end;
+    }
 }

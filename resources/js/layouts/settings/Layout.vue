@@ -19,15 +19,30 @@ const { isCurrentOrParentUrl } = useCurrentUrl();
 </script>
 <template>
     <div class="px-4 py-6 md:px-7">
-        <Heading title="تنظیمات حساب" description="مدیریت اطلاعات شخصی و تنظیمات حساب کاربری" />
+        <Heading
+            title="تنظیمات حساب"
+            description="مدیریت اطلاعات شخصی و تنظیمات حساب کاربری"
+        />
         <div class="flex flex-col gap-8 lg:flex-row">
             <aside class="w-full max-w-xl lg:w-52">
                 <nav class="flex flex-col gap-1" aria-label="تنظیمات حساب">
-                    <Button v-for="item in sidebarNavItems" :key="toUrl(item.href)" variant="ghost" :class="['w-full justify-start', { 'bg-muted': isCurrentOrParentUrl(item.href) }]" as-child><Link :href="item.href">{{ item.title }}</Link></Button>
+                    <Button
+                        v-for="item in sidebarNavItems"
+                        :key="toUrl(item.href)"
+                        variant="ghost"
+                        :class="[
+                            'w-full justify-start',
+                            { 'bg-muted': isCurrentOrParentUrl(item.href) },
+                        ]"
+                        as-child
+                        ><Link :href="item.href">{{ item.title }}</Link></Button
+                    >
                 </nav>
             </aside>
             <Separator class="my-2 lg:hidden" />
-            <div class="min-w-0 flex-1 md:max-w-2xl"><section class="max-w-xl space-y-12"><slot /></section></div>
+            <div class="min-w-0 flex-1 md:max-w-2xl">
+                <section class="max-w-xl space-y-12"><slot /></section>
+            </div>
         </div>
     </div>
 </template>

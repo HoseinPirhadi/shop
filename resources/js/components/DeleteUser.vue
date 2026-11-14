@@ -56,10 +56,13 @@ const passwordInput = useTemplateRef('passwordInput');
                     >
                         <DialogHeader class="space-y-3">
                             <DialogTitle
-                                >آیا از حذف حساب کاربری خود مطمئن هستید؟</DialogTitle
+                                >آیا از حذف حساب کاربری خود مطمئن
+                                هستید؟</DialogTitle
                             >
                             <DialogDescription>
-                                پس از حذف حساب، همه منابع و اطلاعات مرتبط نیز برای همیشه حذف می‌شوند. برای تأیید این عملیات، گذرواژه خود را وارد کنید.
+                                پس از حذف حساب، همه منابع و اطلاعات مرتبط نیز
+                                برای همیشه حذف می‌شوند. برای تأیید این عملیات،
+                                گذرواژه خود را وارد کنید.
                             </DialogDescription>
                         </DialogHeader>
 
@@ -67,12 +70,8 @@ const passwordInput = useTemplateRef('passwordInput');
                             <Label for="password" class="sr-only"
                                 >گذرواژه</Label
                             >
-                            <گذرواژهInput
-                                id="password"
-                                name="password"
-                                ref="passwordInput"
-                                placeholder="گذرواژه"
-                            />
+                            <گذرواژهInput id="password" name="password"
+                            ref="passwordInput" placeholder="گذرواژه" />
                             <InputError :message="errors.password" />
                         </div>
 
