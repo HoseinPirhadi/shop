@@ -51,11 +51,11 @@ class CategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    public function store(StoreCategoryRequest $request): CategoryResource
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
         $category = Category::query()->create($request->validated());
 
-        return new CategoryResource($category);
+        return (new CategoryResource($category))->response()->setStatusCode(201);
     }
 
     public function update(UpdateCategoryRequest $request, Category $category): CategoryResource|JsonResponse
@@ -97,14 +97,20 @@ class CategoryController extends Controller
     {
         $parentId = $candidateParentId;
 
-        while ($parentId !== null) {
+        while ($parentId > 0) {
             if ($parentId === $category->id) {
                 return true;
             }
 
-            $parentId = Category::query()
+            $nextParentId = Category::query()
                 ->whereKey($parentId)
                 ->value('parent_id');
+
+            if ($nextParentId === null) {
+                return false;
+            }
+
+            $parentId = (int) $nextParentId;
         }
 
         return false;
