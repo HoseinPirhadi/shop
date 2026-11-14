@@ -98,8 +98,7 @@ test('public product details include image metadata for active products', functi
     $path = 'products/'.$product->id.'/front.jpg';
     Storage::disk('public')->put($path, 'fake-image');
 
-    ProductImage::query()->create([
-        'product_id' => $product->id,
+    $product->images()->create([
         'path' => $path,
         'alt' => 'چراغ از روبه‌رو',
         'sort_order' => 0,
@@ -121,8 +120,7 @@ test('deleting a product also removes its stored image files', function () {
     $path = 'products/'.$product->id.'/image.jpg';
     Storage::disk('public')->put($path, 'fake-image');
 
-    ProductImage::query()->create([
-        'product_id' => $product->id,
+    $product->images()->create([
         'path' => $path,
         'is_primary' => true,
     ]);
@@ -138,8 +136,7 @@ test('primary images cannot be unset and images cannot be managed through anothe
     $admin = User::factory()->create(['is_admin' => true]);
     $product = Product::factory()->create();
     $anotherProduct = Product::factory()->create();
-    $image = ProductImage::query()->create([
-        'product_id' => $product->id,
+    $image = $product->images()->create([
         'path' => 'products/'.$product->id.'/front.jpg',
         'is_primary' => true,
     ]);
