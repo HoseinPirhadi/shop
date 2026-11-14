@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null $parent_id
  * @property int $sort_order
  * @property bool $is_active
+ * @property \\Illuminate\\Support\\Carbon|null $created_at
+ * @property \\Illuminate\\Support\\Carbon|null $updated_at
  */
 class Category extends Model
 {
