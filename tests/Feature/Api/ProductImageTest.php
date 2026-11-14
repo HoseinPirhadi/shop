@@ -32,7 +32,7 @@ test('administrator can upload images, choose a primary image, and delete images
     $secondUpload = $this->actingAs($admin)->post(
         '/api/v1/admin/products/'.$product->id.'/images',
         [
-            'image' => UploadedFile::fake()->image('back.webp'),
+            'image' => UploadedFile::fake()->image('back.jpg'),
             'alt' => 'نمای پشت',
         ],
         ['Accept' => 'application/json'],
@@ -42,7 +42,7 @@ test('administrator can upload images, choose a primary image, and delete images
 
     $secondImage = ProductImage::query()
         ->where('product_id', $product->id)
-        ->whereKeyNot($firstImage->id)
+        ->where('id', '<>', $firstImage->id)
         ->firstOrFail();
 
     $this->actingAs($admin)
