@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::post('/products', [ProductController::class, 'store'])->name('products.store');
             Route::patch('/products/{product}', [ProductController::class, 'update'])->name('products.update');
             Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+            Route::post('/products/{product}/images', [ProductImageController::class, 'store'])->name('products.images.store');
+            Route::patch('/products/{product}/images/{image}', [ProductImageController::class, 'update'])->name('products.images.update');
+            Route::delete('/products/{product}/images/{image}', [ProductImageController::class, 'destroy'])->name('products.images.destroy');
         });
 
     Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
