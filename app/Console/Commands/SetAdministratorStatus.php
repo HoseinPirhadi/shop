@@ -70,13 +70,15 @@ class SetAdministratorStatus extends Command
             return self::SUCCESS;
         }
 
-        $updated = DB::transaction(function () use ($user, $shouldBeAdmin): bool {
+        $userId = (int) $user->getKey();
+
+        $updated = DB::transaction(function () use ($userId, $shouldBeAdmin): bool {
             $administratorIds = User::query()
                 ->where('is_admin', true)
                 ->lockForUpdate()
                 ->pluck('id');
 
-            $lockedUser = User::query()->lockForUpdate()->findOrFail($user->getKey());
+            $lockedUser = User::query()->lockForUpdate()->whereKey($userId)->firstOrFail();
 
             if (! $shouldBeAdmin && $administratorIds->count() <= 1 && $administratorIds->contains($lockedUser->getKey())) {
                 return false;
