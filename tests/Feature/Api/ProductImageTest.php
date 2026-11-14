@@ -134,7 +134,6 @@ test('deleting a product also removes its stored image files', function () {
     Storage::disk('public')->assertMissing($path);
 });
 
-
 test('primary images cannot be unset and images cannot be managed through another product', function () {
     $admin = User::factory()->create(['is_admin' => true]);
     $product = Product::factory()->create();
