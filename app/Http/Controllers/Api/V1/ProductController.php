@@ -27,7 +27,7 @@ class ProductController extends Controller
         $query = Product::query()
             ->with([
                 'categories' => fn ($query) => $query->where('is_active', true),
-                'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+                'images' => fn ($query) => $query->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id'),
             ])
             ->where('is_active', true);
 
@@ -64,7 +64,7 @@ class ProductController extends Controller
         $product = Product::query()
             ->with([
                 'categories' => fn ($query) => $query->where('is_active', true),
-                'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+                'images' => fn ($query) => $query->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id'),
             ])
             ->where('slug', $slug)
             ->where('is_active', true)
@@ -84,7 +84,7 @@ class ProductController extends Controller
         $products = Product::query()
             ->with([
                 'categories',
-                'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id'),
+                'images' => fn ($query) => $query->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id'),
             ])
             ->orderBy('sort_order')
             ->orderBy('name')
