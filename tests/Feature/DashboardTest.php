@@ -22,7 +22,8 @@ test('customers can visit their dashboard without seeing store statistics', func
 });
 
 test('administrators see live product category and inventory statistics', function () {
-    $admin = User::factory()->create(['is_admin' => true]);
+    $admin = User::factory()->create();
+    $admin->forceFill(['is_admin' => true])->save();
     Product::factory()->create(['is_active' => true]);
     Product::factory()->create(['is_active' => false]);
     Category::factory()->create();
