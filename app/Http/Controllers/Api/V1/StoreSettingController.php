@@ -32,7 +32,6 @@ class StoreSettingController extends Controller
                 'store_name' => $settings->store_name,
                 'currency_code' => $settings->currency_code,
                 'currency_configured' => $settings->hasConfiguredCurrency(),
-                'checkout_enabled' => $settings->hasConfiguredCurrency(),
             ],
         ]);
     }
