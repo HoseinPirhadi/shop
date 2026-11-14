@@ -23,11 +23,6 @@ class ProductVariantResource extends JsonResource
             'name' => $this->name,
             'options' => $this->options,
             'is_available' => $available && $this->is_active,
-            'sku' => $this->when($isAdmin, $this->sku),
-            'stock_quantity' => $this->when($request->user()?->isAdmin() ?? false, $this->stock_quantity),
-            'track_inventory' => $this->when($request->user()?->isAdmin() ?? false, $this->track_inventory),
-            'is_active' => $this->when($request->user()?->isAdmin() ?? false, $this->is_active),
-            'is_default' => $this->when($request->user()?->isAdmin() ?? false, $this->is_default),
         ];
     }
 }
