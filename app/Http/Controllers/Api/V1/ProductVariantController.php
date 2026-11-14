@@ -7,7 +7,6 @@ use App\Http\Requests\StoreProductVariantRequest;
 use App\Http\Requests\UpdateProductVariantRequest;
 use App\Http\Resources\AdminProductVariantResource;
 use App\Http\Resources\ProductVariantMovementResource;
-use App\Http\Resources\ProductVariantResource;
 use App\Models\InventoryMovement;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -47,7 +46,7 @@ class ProductVariantController extends Controller
         UpdateProductVariantRequest $request,
         Product $product,
         ProductVariant $variant,
-    ): ProductVariantResource {
+    ): AdminProductVariantResource {
         abort_unless($variant->product_id === $product->id, 404);
 
         $data = $request->validated();
@@ -107,7 +106,7 @@ class ProductVariantController extends Controller
         return response()->json(status: 204);
     }
 
-    public function adjustInventory(Request $request, Product $product, ProductVariant $variant): ProductVariantResource
+    public function adjustInventory(Request $request, Product $product, ProductVariant $variant): AdminProductVariantResource
     {
         abort_unless($variant->product_id === $product->id, 404);
 
