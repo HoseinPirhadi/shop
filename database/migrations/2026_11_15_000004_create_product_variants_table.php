@@ -26,6 +26,10 @@ return new class extends Migration
 
         $now = now();
         DB::table('products')->orderBy('id')->chunkById(500, function ($products) use ($now): void {
+            if ($products->isEmpty()) {
+                return;
+            }
+
             DB::table('product_variants')->insert(
                 $products->map(fn ($product): array => [
                     'product_id' => $product->id,
