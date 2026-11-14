@@ -4,7 +4,7 @@ import { useTemplateRef } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
-import گذرواژهInput from '@/components/گذرواژهInput.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -70,7 +70,7 @@ const passwordInput = useTemplateRef('passwordInput');
                             <Label for="password" class="sr-only"
                                 >گذرواژه</Label
                             >
-                            <گذرواژهInput id="password" name="password"
+                            <PasswordInput id="password" name="password"
                             ref="passwordInput" placeholder="گذرواژه" />
                             <InputError :message="errors.password" />
                         </div>
