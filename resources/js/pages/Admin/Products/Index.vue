@@ -116,10 +116,20 @@ async function loadProducts(url = '/api/v1/admin/products') {
 
 async function loadCategories() {
     try {
-        const result = await apiRequest<{ data: Category[] }>(
-            '/api/v1/admin/categories',
-        );
-        categories.value = result.data;
+        let nextUrl: string | null = '/api/v1/admin/categories';
+        const allCategories: Category[] = [];
+
+        while (nextUrl) {
+            const result = await apiRequest<{
+                data: Category[];
+                links: { next: string | null };
+            }>(nextUrl);
+
+            allCategories.push(...result.data);
+            nextUrl = result.links.next;
+        }
+
+        categories.value = allCategories;
     } catch {
         errorMessage.value =
             'دریافت دسته‌بندی‌ها ناموفق بود؛ امکان انتخاب دسته‌بندی وجود ندارد.';
