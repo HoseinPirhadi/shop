@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @mixin \App\Models\ProductImage
+ * @mixin ProductImage
  */
 class ProductImageResource extends JsonResource
 {
