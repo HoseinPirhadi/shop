@@ -8,7 +8,7 @@ use Laravel\Sanctum\Sanctum;
 return [
     'stateful' => array_values(array_filter(array_map(
         'trim',
-        explode(',', env(
+        explode(',', (string) env(
             'SANCTUM_STATEFUL_DOMAINS',
             'localhost,localhost:8000,127.0.0.1,127.0.0.1:8000,::1,'.Sanctum::currentApplicationUrlWithPort(),
         )),
