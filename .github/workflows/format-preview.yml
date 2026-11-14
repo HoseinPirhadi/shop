@@ -1,0 +1,22 @@
+name: Format preview
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  format-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run check:fix
+      - name: Show formatted diff
+        run: git diff --no-ext-diff -- docs/CATALOG.md docs/PRODUCT-DECISIONS.md docs/PROJECT.md resources/js/components/admin/ProductVariantManager.vue resources/js/pages/Admin/Products/Index.vue resources/js/pages/Store/Products/Show.vue
