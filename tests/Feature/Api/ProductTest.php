@@ -26,6 +26,19 @@ test('public product detail is available by slug only when active', function () 
         ->assertNotFound();
 });
 
+test('public product responses only include active categories', function () {
+    $activeCategory = Category::factory()->create(['is_active' => true]);
+    $inactiveCategory = Category::factory()->create(['is_active' => false]);
+    $product = Product::factory()->create(['is_active' => true]);
+    $product->categories()->attach([$activeCategory->id, $inactiveCategory->id]);
+
+    $this->getJson('/api/v1/products')
+        ->assertOk()
+        ->assertJsonPath('data.0.id', $product->id)
+        ->assertJsonCount(1, 'data.0.categories')
+        ->assertJsonPath('data.0.categories.0.id', $activeCategory->id);
+});
+
 test('guests and regular users cannot access product administration', function () {
     $this->getJson('/api/v1/admin/products')->assertUnauthorized();
     $this->postJson('/api/v1/admin/products', [])->assertUnauthorized();
