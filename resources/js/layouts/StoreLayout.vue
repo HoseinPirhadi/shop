@@ -1,9 +1,28 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
 const page = usePage<{ auth: { user: { name: string } | null } }>();
 const isAuthenticated = computed(() => page.props.auth.user !== null);
+const storeName = ref('فروشگاه');
+
+onMounted(async () => {
+    try {
+        const response = await fetch('/api/v1/store-settings', {
+            headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) return;
+
+        const payload = (await response.json()) as {
+            data: { store_name: string | null };
+        };
+
+        storeName.value = payload.data.store_name || 'فروشگاه';
+    } catch {
+        storeName.value = 'فروشگاه';
+    }
+});
 </script>
 
 <template>
@@ -13,7 +32,7 @@ const isAuthenticated = computed(() => page.props.auth.user !== null);
                 class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8"
             >
                 <Link href="/" class="text-xl font-bold tracking-tight">
-                    فروشگاه
+                    {{ storeName }}
                 </Link>
 
                 <nav class="flex items-center gap-3 text-sm sm:gap-5">
@@ -56,7 +75,7 @@ const isAuthenticated = computed(() => page.props.auth.user !== null);
             <div
                 class="mx-auto max-w-7xl px-4 py-5 text-sm text-muted-foreground sm:px-6 lg:px-8"
             >
-                فروشگاه اینترنتی
+                {{ storeName }}
             </div>
         </footer>
     </div>
