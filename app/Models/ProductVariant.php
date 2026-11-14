@@ -19,6 +19,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class ProductVariant extends Model
 {
+    protected static function booted(): void
+    {
+        static::creating(function (ProductVariant $variant): void {
+            $variant->stock_quantity ??= 0;
+            $variant->track_inventory ??= true;
+            $variant->is_active ??= true;
+            $variant->is_default ??= false;
+        });
+    }
+
     /** @var list<string> */
     protected $fillable = [
         'name',
