@@ -120,10 +120,10 @@ async function loadCategories() {
         const allCategories: Category[] = [];
 
         while (nextUrl) {
-            const result = await apiRequest<{
+            const result: {
                 data: Category[];
                 links: { next: string | null };
-            }>(nextUrl);
+            } = await apiRequest(nextUrl);
 
             allCategories.push(...result.data);
             nextUrl = result.links.next;
