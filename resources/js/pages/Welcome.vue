@@ -23,7 +23,7 @@ import { dashboard, login, register } from '@/routes';
                 <h1 class="mt-6 text-4xl leading-[1.5] font-black tracking-tight md:text-5xl">آنچه نیاز دارید،<br /><span class="text-indigo-600 dark:text-indigo-400">در یک فروشگاه</span></h1>
                 <p class="mt-6 max-w-xl text-base leading-8 text-slate-500 dark:text-slate-400">محصولات را مرور کنید، دسته‌بندی‌ها را ببینید و برای خریدی آسان آماده شوید. فروشگاه به‌تدریج با امکانات تازه تکمیل می‌شود.</p>
                 <div class="mt-8 flex flex-wrap gap-3">
-                    <Link href="/categories" class="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-600/20">مشاهده محصولات</Link>
+                    <Link href="/" class="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-600/20">مشاهده محصولات</Link>
                     <Link v-if="!$page.props.auth.user" :href="register()" class="rounded-xl border border-slate-200 bg-white px-6 py-3 font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">ساخت حساب کاربری</Link>
                 </div>
             </section>
