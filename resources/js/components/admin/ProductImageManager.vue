@@ -263,7 +263,7 @@ async function setPrimary(image: ProductImage) {
                 />
             </label>
             <label class="grid gap-1.5 text-sm">
-                توضیح تصویر (Alt)
+                متن جایگزین تصویر
                 <input
                     v-model="alt"
                     maxlength="160"
