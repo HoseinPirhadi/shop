@@ -494,7 +494,11 @@ onMounted(async () => {
                             <td class="px-4 py-3">
                                 <span
                                     class="admin-status"
-                                    :class="product.is_active ? 'is-active' : 'is-inactive'"
+                                    :class="
+                                        product.is_active
+                                            ? 'is-active'
+                                            : 'is-inactive'
+                                    "
                                 >
                                     {{
                                         product.is_active ? 'فعال' : 'پیش‌نویس'

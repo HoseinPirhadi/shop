@@ -426,7 +426,11 @@ onMounted(() => loadCategories());
                             <td class="px-4 py-3">
                                 <span
                                     class="admin-status"
-                                    :class="category.is_active ? 'is-active' : 'is-inactive'"
+                                    :class="
+                                        category.is_active
+                                            ? 'is-active'
+                                            : 'is-inactive'
+                                    "
                                 >
                                     {{
                                         category.is_active ? 'فعال' : 'غیرفعال'
