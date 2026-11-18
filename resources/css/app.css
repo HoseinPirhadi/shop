@@ -228,35 +228,35 @@
     color: var(--sidebar-foreground);
 }
 
-[data-admin-sidebar] [data-sidebar="menu-button"] {
+[data-admin-sidebar] [data-sidebar='menu-button'] {
     color: #c6d0e2;
 }
 
-[data-admin-sidebar] [data-sidebar="menu-button"]:hover,
-[data-admin-sidebar] [data-sidebar="menu-button"][data-active="true"] {
+[data-admin-sidebar] [data-sidebar='menu-button']:hover,
+[data-admin-sidebar] [data-sidebar='menu-button'][data-active='true'] {
     background: rgb(129 140 248 / 17%);
     color: #ffffff;
 }
 
-[data-admin-sidebar] [data-sidebar="menu-button"][data-active="true"] {
+[data-admin-sidebar] [data-sidebar='menu-button'][data-active='true'] {
     box-shadow: inset -3px 0 0 #818cf8;
 }
 
-[data-admin-sidebar] [data-sidebar="group-label"] {
+[data-admin-sidebar] [data-sidebar='group-label'] {
     color: #8d9bb2;
 }
 
-[data-admin-sidebar] [data-sidebar="header"] {
+[data-admin-sidebar] [data-sidebar='header'] {
     border-bottom: 1px solid rgb(255 255 255 / 8%);
     margin-bottom: 1rem;
 }
 
-[data-admin-sidebar] [data-sidebar="footer"] {
+[data-admin-sidebar] [data-sidebar='footer'] {
     border-top: 1px solid rgb(255 255 255 / 8%);
     padding-top: 0.75rem;
 }
 
-[data-admin-sidebar] [data-sidebar="trigger"] {
+[data-admin-sidebar] [data-sidebar='trigger'] {
     color: #e8edf7;
 }
 
@@ -314,7 +314,7 @@
     vertical-align: middle;
 }
 
-[data-admin-panel] input:not([type="checkbox"]):not([type="radio"]),
+[data-admin-panel] input:not([type='checkbox']):not([type='radio']),
 [data-admin-panel] select,
 [data-admin-panel] textarea {
     border-color: #dce3ee;
@@ -326,8 +326,7 @@
         box-shadow 150ms ease;
 }
 
-[data-admin-panel]
-    input:not([type="checkbox"]):not([type="radio"]):focus,
+[data-admin-panel] input:not([type='checkbox']):not([type='radio']):focus,
 [data-admin-panel] select:focus,
 [data-admin-panel] textarea:focus {
     border-color: #818cf8;
@@ -386,7 +385,7 @@
 }
 
 [data-admin-panel] > div > div:first-child button,
-[data-admin-panel] > div > div:first-child a[class*="bg-primary"] {
+[data-admin-panel] > div > div:first-child a[class*='bg-primary'] {
     min-height: 2.65rem;
     border-radius: 0.75rem;
     box-shadow: 0 3px 9px rgb(79 70 229 / 16%);
@@ -405,15 +404,15 @@
     font-weight: 400;
 }
 
-[data-admin-panel] section form button[type="submit"] {
+[data-admin-panel] section form button[type='submit'] {
     min-height: 2.65rem;
     border-radius: 0.7rem;
     padding-inline: 1.25rem;
     font-weight: 700;
 }
 
-[data-admin-panel] [role="alert"],
-[data-admin-panel] [role="status"] {
+[data-admin-panel] [role='alert'],
+[data-admin-panel] [role='status'] {
     border-radius: 0.8rem;
 }
 
@@ -477,9 +476,7 @@
     border-color: #26364e;
 }
 
-.dark
-    [data-admin-panel]
-    input:not([type="checkbox"]):not([type="radio"]),
+.dark [data-admin-panel] input:not([type='checkbox']):not([type='radio']),
 .dark [data-admin-panel] select,
 .dark [data-admin-panel] textarea {
     border-color: #34435c;
@@ -487,9 +484,7 @@
     color: #e5eaf3;
 }
 
-.dark
-    [data-admin-panel]
-    input:not([type="checkbox"]):not([type="radio"]):focus,
+.dark [data-admin-panel] input:not([type='checkbox']):not([type='radio']):focus,
 .dark [data-admin-panel] select:focus,
 .dark [data-admin-panel] textarea:focus {
     border-color: #818cf8;

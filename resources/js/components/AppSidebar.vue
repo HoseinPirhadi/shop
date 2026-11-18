@@ -52,7 +52,7 @@ const mainNavItems = computed<NavItem[]>(() => {
         dir="rtl"
         :data-admin-sidebar="isAdmin ? '' : undefined"
     >
-        <SidebarHeader class="px-3 pb-4 pt-5">
+        <SidebarHeader class="px-3 pt-5 pb-4">
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
