@@ -49,7 +49,7 @@ const mainNavItems = computed<NavItem[]>(() => {
         collapsible="icon"
         variant="inset"
         dir="rtl"
-        :data-admin-sidebar="page.props.auth.user?.is_admin ? '' : undefined"
+        :data-admin-sidebar="page.props.auth.user?.is_admin"
     >
         <SidebarHeader class="px-3 pb-4 pt-5">
             <SidebarMenu>
