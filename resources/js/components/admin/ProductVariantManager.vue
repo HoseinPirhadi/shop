@@ -354,7 +354,7 @@ onMounted(loadVariants);
                     </span>
                 </label>
                 <label class="grid gap-1 text-sm">
-                    SKU
+                    شناسه کالا
                     <input
                         v-model="form.sku"
                         maxlength="100"
