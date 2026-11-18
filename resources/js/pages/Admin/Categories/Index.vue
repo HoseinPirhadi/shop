@@ -224,7 +224,7 @@ onMounted(() => loadCategories());
 
             <button
                 type="button"
-                class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+                class="admin-primary-action rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
                 @click="openCreateForm"
             >
                 دسته‌بندی جدید
@@ -425,11 +425,8 @@ onMounted(() => loadCategories());
                             </td>
                             <td class="px-4 py-3">
                                 <span
-                                    :class="
-                                        category.is_active
-                                            ? 'text-green-600'
-                                            : 'text-muted-foreground'
-                                    "
+                                    class="admin-status"
+                                    :class="category.is_active ? 'is-active' : 'is-inactive'"
                                 >
                                     {{
                                         category.is_active ? 'فعال' : 'غیرفعال'
@@ -444,14 +441,14 @@ onMounted(() => loadCategories());
                                 <div class="flex items-center gap-3">
                                     <button
                                         type="button"
-                                        class="text-primary hover:underline"
+                                        class="admin-row-action admin-row-action-edit text-primary hover:underline"
                                         @click="openEditForm(category)"
                                     >
                                         ویرایش
                                     </button>
                                     <button
                                         type="button"
-                                        class="text-destructive hover:underline disabled:opacity-50"
+                                        class="admin-row-action admin-row-action-delete text-destructive hover:underline disabled:opacity-50"
                                         :disabled="deletingId === category.id"
                                         @click="deleteCategory(category)"
                                     >
