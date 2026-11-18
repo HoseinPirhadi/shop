@@ -191,7 +191,6 @@
     }
 }
 
-
 /* Unified administration workspace */
 [data-admin-panel] {
     --background: #f5f7fb;
@@ -327,7 +326,8 @@
         box-shadow 150ms ease;
 }
 
-[data-admin-panel] input:not([type="checkbox"]):not([type="radio"]):focus,
+[data-admin-panel]
+    input:not([type="checkbox"]):not([type="radio"]):focus,
 [data-admin-panel] select:focus,
 [data-admin-panel] textarea:focus {
     border-color: #818cf8;
@@ -367,7 +367,6 @@
         font-size: 0.8rem;
     }
 }
-
 
 [data-admin-panel] > div {
     max-width: 1680px;
@@ -478,7 +477,9 @@
     border-color: #26364e;
 }
 
-.dark [data-admin-panel] input:not([type="checkbox"]):not([type="radio"]),
+.dark
+    [data-admin-panel]
+    input:not([type="checkbox"]):not([type="radio"]),
 .dark [data-admin-panel] select,
 .dark [data-admin-panel] textarea {
     border-color: #34435c;
@@ -486,7 +487,9 @@
     color: #e5eaf3;
 }
 
-.dark [data-admin-panel] input:not([type="checkbox"]):not([type="radio"]):focus,
+.dark
+    [data-admin-panel]
+    input:not([type="checkbox"]):not([type="radio"]):focus,
 .dark [data-admin-panel] select:focus,
 .dark [data-admin-panel] textarea:focus {
     border-color: #818cf8;
