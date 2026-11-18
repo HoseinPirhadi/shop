@@ -252,7 +252,7 @@ onMounted(async () => {
 
             <button
                 type="button"
-                class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+                class="admin-primary-action rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
                 @click="openCreateForm"
             >
                 محصول جدید
@@ -493,11 +493,8 @@ onMounted(async () => {
                             </td>
                             <td class="px-4 py-3">
                                 <span
-                                    :class="
-                                        product.is_active
-                                            ? 'text-green-600'
-                                            : 'text-muted-foreground'
-                                    "
+                                    class="admin-status"
+                                    :class="product.is_active ? 'is-active' : 'is-inactive'"
                                 >
                                     {{
                                         product.is_active ? 'فعال' : 'پیش‌نویس'
@@ -511,14 +508,14 @@ onMounted(async () => {
                                 <div class="flex items-center gap-3">
                                     <button
                                         type="button"
-                                        class="text-primary hover:underline"
+                                        class="admin-row-action admin-row-action-edit text-primary hover:underline"
                                         @click="openEditForm(product)"
                                     >
                                         ویرایش
                                     </button>
                                     <button
                                         type="button"
-                                        class="text-destructive hover:underline disabled:opacity-50"
+                                        class="admin-row-action admin-row-action-delete text-destructive hover:underline disabled:opacity-50"
                                         :disabled="deletingId === product.id"
                                         @click="deleteProduct(product)"
                                     >
