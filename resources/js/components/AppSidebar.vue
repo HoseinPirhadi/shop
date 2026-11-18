@@ -44,8 +44,14 @@ const mainNavItems = computed<NavItem[]>(() => {
 </script>
 
 <template>
-    <Sidebar side="right" collapsible="icon" variant="inset" dir="rtl">
-        <SidebarHeader>
+    <Sidebar
+        side="right"
+        collapsible="icon"
+        variant="inset"
+        dir="rtl"
+        :data-admin-sidebar="page.props.auth.user?.is_admin ? '' : undefined"
+    >
+        <SidebarHeader class="px-3 pb-4 pt-5">
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
@@ -57,7 +63,7 @@ const mainNavItems = computed<NavItem[]>(() => {
             </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent class="px-2">
             <NavMain :items="mainNavItems" />
         </SidebarContent>
 
