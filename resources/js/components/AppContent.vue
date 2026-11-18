@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import { SidebarInset } from '@/components/ui/sidebar';
 import type { AppVariant } from '@/types';
 
@@ -12,10 +13,16 @@ const props = withDefaults(defineProps<Props>(), {
     variant: 'sidebar',
 });
 const className = computed(() => props.class);
+const page = usePage<{ auth: { user: { is_admin?: boolean } | null } }>();
+const isAdmin = computed(() => Boolean(page.props.auth.user?.is_admin));
 </script>
 
 <template>
-    <SidebarInset v-if="props.variant === 'sidebar'" :class="className">
+    <SidebarInset
+        v-if="props.variant === 'sidebar'"
+        :class="className"
+        :data-admin-panel="isAdmin ? '' : undefined"
+    >
         <slot />
     </SidebarInset>
     <main
