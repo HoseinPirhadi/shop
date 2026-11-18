@@ -190,3 +190,180 @@
         text-align: end;
     }
 }
+
+
+/* Unified administration workspace */
+[data-admin-panel] {
+    --background: #f5f7fb;
+    --foreground: #172033;
+    --card: #ffffff;
+    --card-foreground: #172033;
+    --popover: #ffffff;
+    --popover-foreground: #172033;
+    --primary: #4f46e5;
+    --primary-foreground: #ffffff;
+    --secondary: #eef2ff;
+    --secondary-foreground: #3730a3;
+    --muted: #f1f4f9;
+    --muted-foreground: #718096;
+    --accent: #eef2ff;
+    --accent-foreground: #3730a3;
+    --border: #e5eaf2;
+    --input: #dce3ee;
+    --ring: #818cf8;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+}
+
+[data-admin-sidebar] {
+    --sidebar-background: #17233b;
+    --sidebar-foreground: #e8edf7;
+    --sidebar-primary: #818cf8;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgb(255 255 255 / 9%);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgb(255 255 255 / 9%);
+    --sidebar-ring: #a5b4fc;
+    --sidebar: #17233b;
+    color: var(--sidebar-foreground);
+}
+
+[data-admin-sidebar] [data-sidebar="menu-button"] {
+    color: #c6d0e2;
+}
+
+[data-admin-sidebar] [data-sidebar="menu-button"]:hover,
+[data-admin-sidebar] [data-sidebar="menu-button"][data-active="true"] {
+    background: rgb(129 140 248 / 17%);
+    color: #ffffff;
+}
+
+[data-admin-sidebar] [data-sidebar="menu-button"][data-active="true"] {
+    box-shadow: inset -3px 0 0 #818cf8;
+}
+
+[data-admin-sidebar] [data-sidebar="group-label"] {
+    color: #8d9bb2;
+}
+
+[data-admin-sidebar] [data-sidebar="header"] {
+    border-bottom: 1px solid rgb(255 255 255 / 8%);
+    margin-bottom: 1rem;
+}
+
+[data-admin-sidebar] [data-sidebar="footer"] {
+    border-top: 1px solid rgb(255 255 255 / 8%);
+    padding-top: 0.75rem;
+}
+
+[data-admin-sidebar] [data-sidebar="trigger"] {
+    color: #e8edf7;
+}
+
+[data-admin-panel] .admin-panel-header {
+    border-color: #e5eaf2;
+    background: rgb(255 255 255 / 92%);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 3%);
+    backdrop-filter: blur(14px);
+}
+
+[data-admin-panel] > div {
+    width: 100%;
+}
+
+[data-admin-panel] > div > section {
+    overflow: hidden;
+    border-color: #e5eaf2;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 18px rgb(15 23 42 / 3%);
+}
+
+[data-admin-panel] > div > section:has(form) {
+    overflow: visible;
+}
+
+[data-admin-panel] table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+[data-admin-panel] table thead {
+    background: #f7f8fc;
+}
+
+[data-admin-panel] table thead th {
+    padding-block: 0.9rem;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+[data-admin-panel] table tbody tr {
+    transition: background-color 150ms ease;
+}
+
+[data-admin-panel] table tbody tr:hover {
+    background: #f8faff;
+}
+
+[data-admin-panel] table tbody td {
+    border-color: #edf0f5;
+    padding-block: 0.9rem;
+    vertical-align: middle;
+}
+
+[data-admin-panel] input:not([type="checkbox"]):not([type="radio"]),
+[data-admin-panel] select,
+[data-admin-panel] textarea {
+    border-color: #dce3ee;
+    border-radius: 0.65rem;
+    background-color: #ffffff;
+    color: #172033;
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+[data-admin-panel] input:not([type="checkbox"]):not([type="radio"]):focus,
+[data-admin-panel] select:focus,
+[data-admin-panel] textarea:focus {
+    border-color: #818cf8;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(129 140 248 / 16%);
+}
+
+[data-admin-panel] button {
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease,
+        box-shadow 150ms ease,
+        transform 150ms ease;
+}
+
+[data-admin-panel] button:focus-visible,
+[data-admin-panel] a:focus-visible {
+    outline: 2px solid #818cf8;
+    outline-offset: 2px;
+}
+
+[data-admin-panel] button:disabled {
+    cursor: not-allowed;
+}
+
+@media (max-width: 767px) {
+    [data-admin-panel] > div {
+        gap: 1rem;
+    }
+
+    [data-admin-panel] > div > section {
+        border-radius: 0.85rem;
+    }
+
+    [data-admin-panel] table {
+        font-size: 0.8rem;
+    }
+}
