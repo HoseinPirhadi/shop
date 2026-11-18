@@ -25,7 +25,7 @@ jobs:
         run: npm run check:fix
       - name: Commit formatting changes
         run: |
-          git add resources/js/components/AppSidebar.vue resources/js/components/NavMain.vue resources/css/app.css resources/js/pages/Admin/Categories/Index.vue resources/js/pages/Admin/Products/Index.vue
+          git add resources/js/components/AppSidebar.vue resources/js/components/NavMain.vue resources/css/app.css resources/js/pages/Admin/Categories/Index.vue resources/js/pages/Admin/Products/Index.vue resources/js/components/admin/ProductVariantManager.vue resources/js/components/admin/ProductImageManager.vue
           if git diff --cached --quiet; then
             echo "No formatting changes."
           else
