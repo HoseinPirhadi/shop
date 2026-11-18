@@ -500,3 +500,74 @@
         justify-content: center;
     }
 }
+
+
+[data-admin-panel] .admin-primary-action {
+    border-radius: 0.75rem;
+    box-shadow: 0 3px 9px rgb(79 70 229 / 16%);
+    font-weight: 700;
+}
+
+[data-admin-panel] .admin-status {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+[data-admin-panel] .admin-status.is-active {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+[data-admin-panel] .admin-status.is-inactive {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+[data-admin-panel] .admin-row-action {
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+[data-admin-panel] .admin-row-action-edit {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+[data-admin-panel] .admin-row-action-edit:hover {
+    background: #e0e7ff;
+}
+
+[data-admin-panel] .admin-row-action-delete {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+[data-admin-panel] .admin-row-action-delete:hover {
+    background: #ffe4e6;
+}
+
+.dark [data-admin-panel] .admin-status.is-active {
+    background: rgb(16 185 129 / 15%);
+    color: #6ee7b7;
+}
+
+.dark [data-admin-panel] .admin-status.is-inactive {
+    background: #26364e;
+    color: #b6c2d4;
+}
+
+.dark [data-admin-panel] .admin-row-action-edit {
+    background: rgb(99 102 241 / 16%);
+    color: #c7d2fe;
+}
+
+.dark [data-admin-panel] .admin-row-action-delete {
+    background: rgb(244 63 94 / 14%);
+    color: #fda4af;
+}
