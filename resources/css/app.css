@@ -367,3 +367,138 @@
         font-size: 0.8rem;
     }
 }
+
+
+[data-admin-panel] > div {
+    max-width: 1680px;
+    margin-inline: auto;
+}
+
+[data-admin-panel] > div > div:first-child h1 {
+    color: #172033;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+
+[data-admin-panel] > div > div:first-child p {
+    color: #718096;
+    line-height: 1.8;
+}
+
+[data-admin-panel] > div > div:first-child button,
+[data-admin-panel] > div > div:first-child a[class*="bg-primary"] {
+    min-height: 2.65rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 3px 9px rgb(79 70 229 / 16%);
+    font-weight: 700;
+}
+
+[data-admin-panel] section form label {
+    color: #475569;
+    font-weight: 600;
+}
+
+[data-admin-panel] section form label input,
+[data-admin-panel] section form label select,
+[data-admin-panel] section form label textarea {
+    margin-top: 0.2rem;
+    font-weight: 400;
+}
+
+[data-admin-panel] section form button[type="submit"] {
+    min-height: 2.65rem;
+    border-radius: 0.7rem;
+    padding-inline: 1.25rem;
+    font-weight: 700;
+}
+
+[data-admin-panel] [role="alert"],
+[data-admin-panel] [role="status"] {
+    border-radius: 0.8rem;
+}
+
+[data-admin-panel] section article {
+    border-color: #e8edf5;
+    border-radius: 0.85rem;
+    background: #ffffff;
+}
+
+.dark [data-admin-panel] {
+    --background: #0d1423;
+    --foreground: #e5eaf3;
+    --card: #151f31;
+    --card-foreground: #e5eaf3;
+    --popover: #151f31;
+    --popover-foreground: #e5eaf3;
+    --primary: #818cf8;
+    --primary-foreground: #111827;
+    --secondary: #252f45;
+    --secondary-foreground: #c7d2fe;
+    --muted: #202b40;
+    --muted-foreground: #9aa8bd;
+    --accent: #252f45;
+    --accent-foreground: #e0e7ff;
+    --border: #2a3850;
+    --input: #34435c;
+    --ring: #818cf8;
+    background: var(--background);
+    color: var(--foreground);
+}
+
+.dark [data-admin-panel] > div > section,
+.dark [data-admin-panel] section article {
+    border-color: #2a3850;
+    background: #151f31;
+    box-shadow: 0 4px 18px rgb(0 0 0 / 12%);
+}
+
+.dark [data-admin-panel] > div > div:first-child h1 {
+    color: #f1f5f9;
+}
+
+.dark [data-admin-panel] > div > div:first-child p,
+.dark [data-admin-panel] section form label {
+    color: #a9b6ca;
+}
+
+.dark [data-admin-panel] table thead {
+    background: #1b2940;
+}
+
+.dark [data-admin-panel] table thead th {
+    color: #a9b6ca;
+}
+
+.dark [data-admin-panel] table tbody tr:hover {
+    background: #1b2940;
+}
+
+.dark [data-admin-panel] table tbody td {
+    border-color: #26364e;
+}
+
+.dark [data-admin-panel] input:not([type="checkbox"]):not([type="radio"]),
+.dark [data-admin-panel] select,
+.dark [data-admin-panel] textarea {
+    border-color: #34435c;
+    background: #101a2b;
+    color: #e5eaf3;
+}
+
+.dark [data-admin-panel] input:not([type="checkbox"]):not([type="radio"]):focus,
+.dark [data-admin-panel] select:focus,
+.dark [data-admin-panel] textarea:focus {
+    border-color: #818cf8;
+}
+
+@media (max-width: 767px) {
+    [data-admin-panel] > div > div:first-child {
+        align-items: stretch;
+    }
+
+    [data-admin-panel] > div > div:first-child button,
+    [data-admin-panel] > div > div:first-child a {
+        justify-content: center;
+    }
+}
