@@ -8,10 +8,10 @@ withDefaults(defineProps<{ breadcrumbs?: BreadcrumbItem[] }>(), {
 </script>
 <template>
     <header
-        class="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-sidebar-border/70 px-5 md:px-7"
+        class="admin-panel-header sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-3 border-b border-sidebar-border/70 px-4 md:px-7"
     >
         <div class="flex min-w-0 items-center gap-3">
-            <SidebarTrigger class="me-1" /><Breadcrumbs
+            <SidebarTrigger class="me-1 rounded-xl" /><Breadcrumbs
                 v-if="breadcrumbs?.length"
                 :breadcrumbs="breadcrumbs"
             />
