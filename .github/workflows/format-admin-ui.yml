@@ -1,0 +1,36 @@
+name: Format admin UI
+on:
+  push:
+    branches:
+      - dev
+permissions:
+  contents: write
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Format changed admin UI files
+        run: npm run check:fix
+      - name: Commit formatting changes
+        run: |
+          git add resources/js/components/AppSidebar.vue resources/js/components/NavMain.vue resources/css/app.css
+          if git diff --cached --quiet; then
+            echo "No formatting changes."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "style: apply project formatter to admin UI"
+            git push origin HEAD:dev
+          fi
